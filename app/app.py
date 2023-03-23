@@ -2,13 +2,12 @@ import logging
 
 from flask import Flask, jsonify, make_response, request
 
+from app.questrade.API import API
 from app.questrade.ImplicitOAuthFlow import ImplicitOAuthFlow
-
-from qtrade import questrade
 
 application = Flask(__name__, static_folder="./static")
 
-log = logging.getLogger()
+log = logging.getLogger(__name__)
 
 @application.route('/')
 def app():
@@ -30,6 +29,10 @@ def api():
     resp.set_cookie('expires_at', tokens['expires_at'])
     resp.set_cookie('api_server', tokens['api_server'])
 
+    api = API(access_token, api_server)
+    account_ids = api.get_account_id()
+
     return jsonify(
-        tokens=tokens
+        tokens=tokens,
+        account_ids=account_ids
     )
