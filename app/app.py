@@ -25,12 +25,6 @@ def api():
     flow = ImplicitOAuthFlow(access_token, refresh_token, expires_at, api_server)
     tokens = flow.get_valid_access_token()
 
-    resp = make_response(tokens)
-    resp.set_cookie('access_token', tokens['access_token'])
-    resp.set_cookie('refresh_token', tokens['refresh_token'])
-    resp.set_cookie('expires_at', tokens['expires_at'])
-    resp.set_cookie('api_server', tokens['api_server'])
-
     def market_value(element):
         return element['currentMarketValue']
 
@@ -50,10 +44,16 @@ def api():
         result_market_value += functools.reduce(operator.add, map(market_value, positions[_]))
         result_total_cost += functools.reduce(operator.add, map(total_cost, positions[_]))
 
-    return jsonify(
-        tokens=tokens,
-        account_ids=account_id,
-        positions=positions,
-        result_market_value=result_market_value,
-        result_total_cost=result_total_cost
-    )
+    resp = make_response(jsonify([
+        tokens,
+        account_id,
+        positions,
+        result_market_value,
+        result_total_cost
+        ]), 200)
+    resp.set_cookie('access_token', tokens['access_token'])
+    resp.set_cookie('refresh_token', tokens['refresh_token'])
+    resp.set_cookie('expires_at', tokens['expires_at'])
+    resp.set_cookie('api_server', tokens['api_server'])
+
+    return resp
