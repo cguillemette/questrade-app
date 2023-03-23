@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Mktbot</title>
+</head>
+
+<body>
+    <div id="root"></div>
+    <script src="https://unpkg.com/react@17.0.2/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/js-cookie@3.0.1/dist/js.cookie.min.js"></script>
+    <script type="text/javascript">
+        (function storeCookie() {
+            const fragment = window.location.hash.substring(1);
+            let fragmentSplitted = fragment.split('&');
+            let fragments = {}
+            fragmentSplitted.map(function(f) {
+                let pair = f.split("=");
+                if (pair.length === 2) {
+                    Cookies.set(pair[0], pair[1]);
+                }
+            })
+        })();
+
+        function App() {
+            const [clickCount, setClickCount] = React.useState(0);
+
+            const fragment = Cookies.get('fragment');
+
+            function handleClick() {
+                fetch('/api')
+                    .then(function(response) {
+                        return response.json();
+                    })
+                    .then(function(data) {
+                        console.log(data);
+                        setClickCount(clickCount + 1);
+                    })
+                    .catch(function (error) {
+                        console.error(error);
+                    });
+            }
+
+            return (
+                React.createElement("div", null,
+                    React.createElement("h1", null, "My App"),
+                    React.createElement("p", null, "Fragment: ", fragment),
+                    React.createElement("div", { onClick: handleClick }, "Portfolio")
+                )
+            );
+        }
+
+        ReactDOM.render(
+            React.createElement(App),
+            document.getElementById('root')
+        );
+    </script>
+</body>
+
+</html>

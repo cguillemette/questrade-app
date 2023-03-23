@@ -1,0 +1,10 @@
+version: "3"
+services:
+  api:
+    build: ./app
+    environment:
+      FLASK_DEBUG: 1
+    # command: pipenv run flask run --host=0.0.0.0 --port=8080
+    # command: pipenv run gunicorn --workers 1 --reload -b 0.0.0.0:8080 app:app
+    ports: ['3001:8080']
+    volumes: ['./app:/app']
