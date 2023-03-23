@@ -13,6 +13,8 @@
     <script src="https://unpkg.com/js-cookie@3.0.1/dist/js.cookie.min.js"></script>
     <script type="text/javascript">
         (function storeCookie() {
+            const accessToken = Cookies.get("access_token")
+
             const fragment = window.location.hash.substring(1);
             let fragmentSplitted = fragment.split('&');
             let fragments = {}
@@ -22,13 +24,14 @@
                     Cookies.set(pair[0], pair[1]);
                 }
             })
+
+            if (accessToken != Cookies.get("access_token")) {
+                const expiresIn = Cookies.get("expires_in") || "1800";
+                Cookies.set("expires_at", Math.floor(parseInt(expiresIn) + new Date().getTime() / 1000));
+            }
         })();
 
         function App() {
-            const [clickCount, setClickCount] = React.useState(0);
-
-            const fragment = Cookies.get('fragment');
-
             function handleClick() {
                 fetch('/api')
                     .then(function(response) {
@@ -36,7 +39,6 @@
                     })
                     .then(function(data) {
                         console.log(data);
-                        setClickCount(clickCount + 1);
                     })
                     .catch(function (error) {
                         console.error(error);
@@ -45,8 +47,6 @@
 
             return (
                 React.createElement("div", null,
-                    React.createElement("h1", null, "My App"),
-                    React.createElement("p", null, "Fragment: ", fragment),
                     React.createElement("div", { onClick: handleClick }, "Portfolio")
                 )
             );

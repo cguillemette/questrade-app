@@ -1,10 +1,12 @@
 import logging
 
-from flask import Flask, jsonify, request, send_file, abort, Response
+from flask import Flask, jsonify, make_response, request, send_file, abort, Response
 
-from logging.config import dictConfig
+from app.questrade.api import QuestradeAuthFlow
 
 application = Flask(__name__, static_folder="./static")
+
+log = logging.getLogger()
 
 @application.route('/')
 def app():
@@ -14,9 +16,18 @@ def app():
 def api():
     access_token = request.cookies.get('access_token')
     refresh_token = request.cookies.get('refresh_token')
-    expires_in = request.cookies.get('expires_in')
+    expires_at = request.cookies.get('expires_at')
+    api_server = request.cookies.get('api_server')
+
+    flow = QuestradeAuthFlow(access_token, refresh_token, expires_at, api_server)
+    tokens = flow.get_valid_access_token()
+
+    resp = make_response(tokens)
+    resp.set_cookie('access_token', tokens['access_token'])
+    resp.set_cookie('refresh_token', tokens['refresh_token'])
+    resp.set_cookie('expires_at', tokens['expires_at'])
+    resp.set_cookie('api_server', tokens['api_server'])
 
     return jsonify(
-        status=True,
-        data=access_token
+        tokens
     )

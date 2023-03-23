@@ -130,6 +130,10 @@ $ cd app
 $ docker-compose up --build -d
 ```
 
+# Auth
+
+We use "Implicit Grant OAuth" flow documented here: https://www.questrade.com/api/documentation/authorization?TSPD_101_R0=08005b7230ab2000a813ef08eeb33a9bf24b1b1e9cee0fd2bec84c626a9eb9c366751f8d0d47dc9108fbb0473f1430009a473cf802d3836dffe94b52ae48a8f00853d9cacbaaeeac611aba93d7d6a48ff7716a6e4794c6fee5a164944928e260
+
 # Notes
 
 [VS Code - Advanced Containers](https://code.visualstudio.com/remote/advancedcontainers/overview)
