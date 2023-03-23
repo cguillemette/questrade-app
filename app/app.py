@@ -1,4 +1,6 @@
+import functools
 import logging
+import operator
 
 from flask import Flask, jsonify, make_response, request
 
@@ -29,10 +31,29 @@ def api():
     resp.set_cookie('expires_at', tokens['expires_at'])
     resp.set_cookie('api_server', tokens['api_server'])
 
+    def market_value(element):
+        return element['currentMarketValue']
+
+    def total_cost(element):
+        return element['totalCost']
+
     api = API(access_token, api_server)
-    account_ids = api.get_account_id()
+    account_id = api.get_account_id()
+
+    positions = {}
+    result_market_value = 0
+    result_total_cost = 0
+    for _ in account_id:
+        account_positions = api.get_account_positions(_)
+        positions[_] = account_positions
+        log.error(positions)
+        result_market_value += functools.reduce(operator.add, map(market_value, positions[_]))
+        result_total_cost += functools.reduce(operator.add, map(total_cost, positions[_]))
 
     return jsonify(
         tokens=tokens,
-        account_ids=account_ids
+        account_ids=account_id,
+        positions=positions,
+        result_market_value=result_market_value,
+        result_total_cost=result_total_cost
     )
