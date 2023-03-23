@@ -130,3 +130,6 @@ $ cd app
 $ docker-compose up --build -d
 ```
 
+# Notes
+
+[VS Code - Advanced Containers](https://code.visualstudio.com/remote/advancedcontainers/overview)

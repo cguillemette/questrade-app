@@ -10,7 +10,13 @@ application = Flask(__name__, static_folder="./static")
 def app():
     return application.send_static_file("login.html")
 
-    # return jsonify(
-    #     status=True,
-    #     data=_balance
-    # )
+@application.route('/api')
+def api():
+    access_token = request.cookies.get('access_token')
+    refresh_token = request.cookies.get('refresh_token')
+    expires_in = request.cookies.get('expires_in')
+
+    return jsonify(
+        status=True,
+        data=access_token
+    )
