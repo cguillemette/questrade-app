@@ -6,8 +6,7 @@ from urllib import request
 import requests
 
 CONSUMER_KEY = "hUQAC4GccGaOF4JHGKEb11sI66xm3Q"
-REFRESH_TOKEN_URL = "https://login.questrade.com/oauth2/token?grant_type=refresh_token&refresh_token="
-
+REFRESH_TOKEN_URL = "https://login.questrade.com/oauth2/token?grant_type=refresh_token&refresh_token={}"
 # Customer is authorized by redirecting to Questrade
 # => https://login.questrade.com/oauth2/authorize?client_id=<client id>&response_type=token&redirect_uri=<url>
 # Real-life examples:
@@ -15,7 +14,8 @@ REFRESH_TOKEN_URL = "https://login.questrade.com/oauth2/token?grant_type=refresh
 # access_token=Tfwjy5ubpwOcXalWpKNJi6_VoFX8U7ck0&refresh_token=A0kyxSmx1lcJOLqBflwaf88dNjBUHdKF0&token_type=Bearer&expires_in=1800&api_server=https://api06.iq.questrade.com/
 
 log = logging.getLogger()
-class QuestradeAuthFlow:    
+
+class ImplicitOAuthFlow:    
     def __init__(self,
         access_token: str,
         refresh_token: str,
@@ -27,7 +27,6 @@ class QuestradeAuthFlow:
         self.expires_at = expires_at
         self.api_server = api_server
         self.refreshed = False
-        log.error(f"zzz-init {expires_at} {self.expires_at}")
 
     def __refresh_token(self, refresh_token):
         r = request.urlopen(REFRESH_TOKEN_URL.format(refresh_token))
@@ -39,8 +38,6 @@ class QuestradeAuthFlow:
             self.expires_at = str(expires_at)
             self.api_server = token['api_server']
             self.refreshed = True
-        else:
-            log.error("unable to refresh token, need to start from authorization again")
 
     def __tokens(self):
         return {
@@ -52,7 +49,6 @@ class QuestradeAuthFlow:
         }
 
     def get_valid_access_token(self):
-        log.error(f"zzz1: {self.expires_at}")
         if time.time() > int(self.expires_at):
             self.__refresh_token(self.refresh_token)
         return self.__tokens()

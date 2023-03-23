@@ -1,8 +1,10 @@
 import logging
 
-from flask import Flask, jsonify, make_response, request, send_file, abort, Response
+from flask import Flask, jsonify, make_response, request
 
-from app.questrade.api import QuestradeAuthFlow
+from app.questrade.ImplicitOAuthFlow import ImplicitOAuthFlow
+
+from qtrade import questrade
 
 application = Flask(__name__, static_folder="./static")
 
@@ -19,7 +21,7 @@ def api():
     expires_at = request.cookies.get('expires_at')
     api_server = request.cookies.get('api_server')
 
-    flow = QuestradeAuthFlow(access_token, refresh_token, expires_at, api_server)
+    flow = ImplicitOAuthFlow(access_token, refresh_token, expires_at, api_server)
     tokens = flow.get_valid_access_token()
 
     resp = make_response(tokens)
@@ -29,5 +31,5 @@ def api():
     resp.set_cookie('api_server', tokens['api_server'])
 
     return jsonify(
-        tokens
+        tokens=tokens
     )
