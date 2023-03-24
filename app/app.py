@@ -31,7 +31,7 @@ def api():
     def total_cost(element):
         return element['totalCost']
 
-    api = API(access_token, api_server)
+    api = API(tokens['access_token'], api_server)
     account_id = api.get_account_id()
 
     positions = {}
