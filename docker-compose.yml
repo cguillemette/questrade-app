@@ -1,0 +1,9 @@
+version: "3"
+services:
+  api:
+    build: ./app
+    environment:
+      FLASK_DEBUG: 1
+    ports: ['3001:8080']
+    volumes:
+      - .:/workspace

@@ -127,3 +127,9 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# AWS SAM
+.aws-sam/
+
+.vscode/
+TODO.md
