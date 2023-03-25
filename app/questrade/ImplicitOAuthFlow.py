@@ -29,7 +29,7 @@ class ImplicitOAuthFlow:
 
     def __refresh_token(self, refresh_token):
         url = REFRESH_TOKEN_URL.format(refresh_token)
-        r = request.urlopen(REFRESH_TOKEN_URL.format(refresh_token))
+        r = request.urlopen(url)
         if r.getcode() == 200:
             token = json.loads(r.read().decode('utf-8'))
             self.access_token = token['access_token']

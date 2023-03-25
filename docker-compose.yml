@@ -2,7 +2,7 @@ version: "3"
 services:
   ui:
     build: ./ui
-    ports: ['5002:5173']
+    ports: ['3002:5173']
     volumes:
       - ./ui:/workspace/ui
     tty: true
