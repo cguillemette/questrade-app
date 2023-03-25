@@ -1,5 +1,11 @@
 version: "3"
 services:
+  ui:
+    build: ./ui
+    ports: ['3002:5173']
+    volumes:
+      - ./ui:/workspace/ui
+    tty: true
   api:
     build: ./app
     environment:
