@@ -27,7 +27,7 @@
 
             if (accessToken != Cookies.get("access_token")) {
                 const expiresIn = Cookies.get("expires_in") || "1800";
-                Cookies.set("expires_at", Math.floor(parseInt(expiresIn) + new Date().getTime() / 1000));
+                Cookies.set("expires_at", Math.floor(parseInt(expiresIn) + new Date().getTime() / 1000 - 300));
             }
         })();
 

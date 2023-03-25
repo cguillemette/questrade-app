@@ -8,8 +8,8 @@ COPY Pipfile .
 COPY Pipfile.lock .
 
 RUN pip install pipenv
-RUN PIPENV_VENV_IN_PROJECT=1 pipenv install --system --deploy
+RUN PIPENV_VENV_IN_PROJECT=1 pipenv install --deploy
 
 COPY . .
 
-CMD pipenv run flask run --host=0.0.0.0 --port=8080
+CMD pipenv run python -m flask run --host=0.0.0.0 --port=8080

@@ -28,13 +28,13 @@ class ImplicitOAuthFlow:
         self.refreshed = False
 
     def __refresh_token(self, refresh_token):
+        url = REFRESH_TOKEN_URL.format(refresh_token)
         r = request.urlopen(REFRESH_TOKEN_URL.format(refresh_token))
         if r.getcode() == 200:
             token = json.loads(r.read().decode('utf-8'))
-            log.error(token)
             self.access_token = token['access_token']
             self.refresh_token = token['refresh_token']
-            expires_at = int(time.time()) + int(token['expires_in'])
+            expires_at = int(time.time()) + int(token['expires_in']) - 300
             self.expires_at = str(expires_at)
             self.api_server = token['api_server']
             self.refreshed = True
