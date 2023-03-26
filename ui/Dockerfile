@@ -1,10 +1,9 @@
-FROM node:lts-alpine
+FROM node:18-alpine
 
 WORKDIR /workspace/ui
 
 COPY . .
 
-RUN yarn
-RUN npm rebuild
-
-CMD npm run dev  
+RUN corepack enable
+RUN corepack prepare pnpm@latest --activate
+CMD pnpm install && pnpm run dev

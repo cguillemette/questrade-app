@@ -131,7 +131,14 @@ dmypy.json
 # AWS SAM
 .aws-sam/
 
-.vscode/
-TODO.md
+# Vite
+.vite/
 
-ui/node_modules/
+# VS Code
+.vscode/
+
+# pnpm
+.pnpm-store/
+
+# Custom
+TODO.md
