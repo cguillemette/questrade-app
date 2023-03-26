@@ -1,35 +1,32 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+
+import { useEffect, useState } from 'react'
+import Cookies from 'js-cookie';
+
 import './App.css'
+import Accounts from './Accounts';
 
-function App() {
-  const [count, setCount] = useState(0)
+export default function App() {
+  useEffect(() => {
+    const accessToken = Cookies.get("access_token")
 
+    const fragment = window.location.hash.substring(1);
+    let fragmentSplitted = fragment.split('&');
+    fragmentSplitted.map(function(f) {
+        let pair = f.split("=");
+        if (pair.length === 2) {
+            Cookies.set(pair[0], pair[1]);
+        }
+    })
+  
+    if (accessToken != Cookies.get("access_token")) {
+        const expiresIn = Cookies.get("expires_in") || "1800";
+        Cookies.set("expires_at", Math.floor(parseInt(expiresIn) + new Date().getTime() / 1000 - 300).toString());
+    }
+  }, []);
+  
   return (
     <div className="App">
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          blablabla...
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <Accounts />
     </div>
   )
 }
-
-export default App

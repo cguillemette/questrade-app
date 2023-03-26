@@ -4,8 +4,7 @@ services:
     build: ./ui
     ports: ['3002:5173']
     volumes:
-      - ./ui:/workspace/ui
-    tty: true
+      - .:/workspace
   api:
     build: ./app
     environment:

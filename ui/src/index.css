@@ -12,6 +12,8 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
+
+  background: radial-gradient(farthest-corner at 100px 0px, rgb(0, 0, 0) 0%, rgb(32, 124, 229) 100%)
 }
 
 a {
