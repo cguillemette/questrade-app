@@ -1,8 +1,10 @@
+# base
+
 FROM public.ecr.aws/docker/library/python:3.8.12-slim-buster
 
 COPY --from=public.ecr.aws/awsguru/aws-lambda-adapter:0.6.4 /lambda-adapter /opt/extensions/lambda-adapter
 
-WORKDIR /workspace/app
+WORKDIR /workspace/api
 
 COPY Pipfile .
 COPY Pipfile.lock .

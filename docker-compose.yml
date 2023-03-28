@@ -6,7 +6,7 @@ services:
     volumes:
       - .:/workspace
   api:
-    build: ./app
+    build: ./api
     environment:
       FLASK_DEBUG: 1
     ports: ['3001:8080']

@@ -5,8 +5,8 @@ import operator
 from flask import Flask, abort, jsonify, make_response, request
 from flask_cors import CORS
 
-from app.questrade.API import API
-from app.questrade.ImplicitOAuthFlow import ImplicitOAuthFlow
+from api.questrade.API import API
+from api.questrade.ImplicitOAuthFlow import ImplicitOAuthFlow
 
 application = Flask(__name__, static_folder="./static")
 CORS(
