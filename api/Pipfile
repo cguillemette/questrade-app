@@ -4,8 +4,12 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
+flask = "*"
+requests = "*"
+flask-cors = "*"
 
 [dev-packages]
+types-requests = "*"
 
 [requires]
 python_version = "3.8"
