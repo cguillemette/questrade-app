@@ -1,17 +1,25 @@
 import functools
 import logging
 import operator
+import os
 
 from flask import Flask, abort, jsonify, make_response, request
 from flask_cors import CORS
+from dotenv import load_dotenv
 
 from api.questrade.API import API
 from api.questrade.ImplicitOAuthFlow import ImplicitOAuthFlow
 
+load_dotenv()
+
+cors_origin_local=os.getenv('CORS_ORIGIN_LOCAL')
+cors_origin_questrade_callback=os.getenv('CORS_ORIGIN_QUESTRADE_CALLBACK')
+
 application = Flask(__name__, static_folder="./static")
 CORS(
     application, 
-    resources={r"/*": {"origins": "http://127.0.0.1:3002"}}, 
+    resources={r"/*": {"origins": 
+                       [cors_origin_local, cors_origin_questrade_callback]}},
     supports_credentials=True
     )
 
@@ -21,16 +29,15 @@ log = logging.getLogger(__name__)
 def too_many_requests(e):
     return jsonify(error=str(e)), 429
 
-@application.route('/')
-def app():
-    return application.send_static_file("login.html")
-
-@application.route('/api/accounts')
+@application.route('/api/accounts', methods=['GET'])
 def api():
     access_token = request.cookies.get('access_token')
     refresh_token = request.cookies.get('refresh_token')
     expires_at = request.cookies.get('expires_at')
     api_server = request.cookies.get('api_server')
+
+    if access_token is None or refresh_token is None or expires_at is None or api_server is None:
+        return abort(401, "Unauthorized")       
 
     flow = ImplicitOAuthFlow(access_token, refresh_token, expires_at, api_server)
     tokens = flow.get_valid_access_token()
@@ -62,8 +69,9 @@ def api():
                 "result_market_value": result_market_value,
                 "result_total_cost": result_total_cost
             }}), 200)
-    except:
-        abort(429, "Try again later.")
+    except Exception as e:
+        log.info(e)
+        abort(500, "Try again later.")
     finally:
         resp.set_cookie('access_token', tokens['access_token'])
         resp.set_cookie('refresh_token', tokens['refresh_token'])

@@ -7,6 +7,7 @@
   "author": "",
   "license": "MIT",
   "type": "module",
+  "packageManager": "yarn@3.2.3+sha224.953c8233f7a92884eee2de69a1b92d1f2ec1655e66d08071ba9a02fa",
   "scripts": {
     "dev": "vite --host",
     "build": "tsc && vite build",

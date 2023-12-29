@@ -1,18 +1,23 @@
 
-import { useEffect, useState } from 'react'
-import { Account, Accounts, Asset, Assets, PerQuote } from './types'
+import { useEffect, useState } from 'react';
+import { Account, Accounts, Asset, Assets, PerQuote } from './types';
 
 export default function Accounts() {
   const [accounts, setAccounts] = useState<Accounts>(new Map<string, Assets>());
+
   useEffect(() => {
     (async function fetchAccounts() {
-      const response = await fetch("http://127.0.0.1:3001/api/accounts", {
+      const response = await fetch("http://127.0.0.1:6002/api/accounts", {
         credentials: 'include'
       }).catch(e => {
         console.error(`Unexpected error ${e}`)
       });
-      const data = await response?.json();
-      setAccounts(new Map(Object.entries(data.accounts)));
+      try {
+        const data = await response?.json();
+        setAccounts(new Map(Object.entries(data.accounts)));
+      } catch (e) {
+        console.error(`Unexpected error ${e}`)
+      }
     })();
   }, []);
 
@@ -20,7 +25,7 @@ export default function Accounts() {
     <div className="Accounts">
       {renderNew(accounts)}
     </div>
-  )
+  );
 }
 
 function renderQuotePrice(account: Account) {

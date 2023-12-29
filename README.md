@@ -1,134 +1,62 @@
-# Flask example
+# Mktbot
 
-A basic Flask application example. You can build and test it locally as a typical Flask application.
+A simple app that interops with the Questrade API.
 
-Using AWS Lambda Adapter, You can package this web application into Docker image, push to ECR, and deploy to Lambda, ECS/EKS, or EC2.
+- It is also lightweight to setup and deploy if needed.
+- Has hot reloading for both frontend / backend
 
-The application can be deployed in an AWS account using the [Serverless Application Model](https://github.com/awslabs/serverless-application-model). The `template.yaml` file in the root folder contains the application definition.
+## Structure
 
-The top level folder is a typical AWS SAM project. The `app` directory is a flask application with a [Dockerfile](app/Dockerfile).
+[![](https://mermaid.ink/img/pako:eNpVUctugzAQ_BVrT6kEBDA2j0OlpGmkHir1dWrpwbHNQwGMjGmbpvx7Deml9sU7s7Oj8Z6BKyEhg6JRn7xi2qCXXd4hezZve60648pOIBc9ScbNO3Ld6x_0g7arLePHP2rfsOF4dRFt5w50s3oc5WA0ExJtHu4sBw60UresFtbrPPfmYCrZyhwy-xRMH3PIu8n2sdGo51PHITN6lA6MvWBG7mpWatb-B29FbZSGrGDNYMFGWUNbnsGc-jlUWQ_GTuSqK-pyxkfdWLgyph-y9XqmvbI21XjwuGrXQy3mH6g-UrqmIU1YiCWNMSMYC34I0qQIo6AQsR-EDKbJgZ5189QvyMIo9dIoSRNMInsTnzhwgiwg1CPYD0lIYoJpQGKr-lbK5vA9mliTyE9jmvokCbEDcslzf9nIspjF43URzMGnX2gihBE?type=png)](https://mermaid.live/edit#pako:eNpVUctugzAQ_BVrT6kEBDA2j0OlpGmkHir1dWrpwbHNQwGMjGmbpvx7Deml9sU7s7Oj8Z6BKyEhg6JRn7xi2qCXXd4hezZve60648pOIBc9ScbNO3Ld6x_0g7arLePHP2rfsOF4dRFt5w50s3oc5WA0ExJtHu4sBw60UresFtbrPPfmYCrZyhwy-xRMH3PIu8n2sdGo51PHITN6lA6MvWBG7mpWatb-B29FbZSGrGDNYMFGWUNbnsGc-jlUWQ_GTuSqK-pyxkfdWLgyph-y9XqmvbI21XjwuGrXQy3mH6g-UrqmIU1YiCWNMSMYC34I0qQIo6AQsR-EDKbJgZ5189QvyMIo9dIoSRNMInsTnzhwgiwg1CPYD0lIYoJpQGKr-lbK5vA9mliTyE9jmvokCbEDcslzf9nIspjF43URzMGnX2gihBE)
 
-```dockerfile
-FROM public.ecr.aws/docker/library/python:3.8.12-slim-buster
-COPY --from=public.ecr.aws/awsguru/aws-lambda-adapter:0.6.4 /lambda-adapter /opt/extensions/lambda-adapter
-WORKDIR /var/task
-COPY app.py requirements.txt ./
-RUN python3.8 -m pip install -r requirements.txt
-CMD ["gunicorn", "-b=:8080", "-w=1", "app:app"]
-```
+Frontend: React using plain javavscript - http://127.0.0.1:6001
+Backend: Python using Flask - 
 
-Line 2 copies lambda adapter binary into /opt/extensions. This is the only change to run the Flask application on Lambda.
+Both are built using a dockerfile that can be ran locally and deployed to cloud of choice.
 
-```dockerfile
-COPY --from=public.ecr.aws/awsguru/aws-lambda-adapter:0.6.4 /lambda-adapter /opt/extensions/lambda-adapter
-```
+For the sake of simplicity, top level folder has the typical AWS SAM project files to ease deployment on AWS. That can be changed since it doesn't depend on any AWS services, useful if you intend to deploy on another cloud provider.
 
 ## Pre-requisites
 
-The following tools should be installed and configured.
+If you use VS Code and Dev Containers extension, you have nothing to install.
+
+In any case you minimally need [Docker](https://www.docker.com/products/docker-desktop).
+
+If you intend to deploy, you will need the following installed. For more details, refer to [deployment](#deployment).
+
 * [AWS CLI](https://aws.amazon.com/cli/)
 * [SAM CLI](https://github.com/awslabs/aws-sam-cli)
-* [Python](https://www.python.org/)
-    ** [Pyenv/Pipenv](https://medium.com/geekculture/setting-up-python-environment-in-macos-using-pyenv-and-pipenv-116293da8e72#:~:text=Pyenv%20is%20to%20manage%20Python,to%20install%20Pyenv%20and%20Pipenv.)
-* [Docker](https://www.docker.com/products/docker-desktop)
 
+As this app depends on the Questrade API, you will need to setup your own credentials from the [Questrade App Hub](https://www.questrade.com/partner-centre/app-hub).
 
-## Deploy to Lambda
-Navigate to the sample's folder and use the SAM CLI to build a container image
-```shell
-$ aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws
-$ sam build
-```
-
-This command compiles the application and prepares a deployment package in the `.aws-sam` sub-directory.
-
-To deploy the application in your AWS account, you can use the SAM CLI's guided deployment process and follow the instructions on the screen
-
-```shell
-$ sam deploy --guided
-```
-Please take note of the container image name.
-Once the deployment is completed, the SAM CLI will print out the stack's outputs, including the new application URL. You can use `curl` or a web browser to make a call to the URL
-
-```shell
-...
----------------------------------------------------------------------------------------------------------
-OutputKey-Description                        OutputValue
----------------------------------------------------------------------------------------------------------
-FlaskApi - URL for application            https://xxxxxxxxxx.execute-api.us-west-2.amazonaws.com/
----------------------------------------------------------------------------------------------------------
-...
-
-$ curl https://xxxxxxxxxx.execute-api.us-west-2.amazonaws.com/
-```
-
-## Run the docker locally
-
-We can run the same docker image locally, so that we know it can be deployed to ECS Fargate and EKS EC2 without code changes.
-
-```shell
-$ docker run -d -p 8080:8080 {ECR Image}
-
-```
-
-Use curl to verify the docker container works.
-
-```shell
-$ curl localhost:8080/ 
-```
+Once you got your comsumer key set the value in the ./api/.env file.
 
 ## Running locally
 
-SAM
-```sh
-Supports hot reloading (this runs all lambdas)
-$ sam local start-api
-```
-
-Previously if you use the --debug flag, you will see the Event payload.
-You could grab it pass it along to directly call Lambda. (runs only one lambda)
-```sh
-sam local invoke FlaskFunction -e apig-home.json
-```
-
-docker run (see above) (no hot reloading)
-
-docker-compose up --build -d (hot reloading)
-
-aws
-[-] Requires to build and deploy on each change
-
-## Useful CLI commands
+Simply call docker compose:
 
 ```sh
-Passthrough credentials to docker
-aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws
-
-```
-Build, deploy and beep
-$ sam build && sam deploy && print \\a
+# with hot reloading
+docker-compose up --build -d 
 ```
 
-```
-Tail logs
-$ sam logs --stack-name mktbot-serverless --tail
-```
+Browse to http://127.0.0.1:6001.
 
-```
-Build and Run Docker Image (no debugger)
-$ docker-compose up --build -d
-```
+## Code changes locally
 
-```
-Debugging flask app
-$ docker-compose run -p 8000:8000 svc1 python3 -m pdb app.py
-```
+If you use VS Code, no need to install locally node/python or any dependencies.
+You can simply install VS Code extension [Dev Containers](https://code.visualstudio.com/remote/advancedcontainers/overview).
 
-````
-Docker-compose build and up
-$ cd app
-$ docker-compose up --build -d
-```
+Use `Ctrl + Shift + P`, then select `Dev Containers: Attach to running containers..`.
+Select either the ui (front end) and/or api ().
+
+It will spawn a new window, any changes will be reflected.
+
+## Deployment
+
+Though setup for AWS SAM deployment, as a docker image is built it could be easily adapted to deploy to other containerization services: ECS, Fargate and EC2 without code changes.
+
+For AWS SAM, you will find up to date deployment instructions [here](https://github.com/awslabs/aws-lambda-web-adapter/tree/main/examples/flask#deploy-to-lambda)
 
 # Auth
 
@@ -136,4 +64,9 @@ We use "Implicit Grant OAuth" flow documented here: https://www.questrade.com/ap
 
 # Notes
 
-[VS Code - Advanced Containers](https://code.visualstudio.com/remote/advancedcontainers/overview)
+1) Add callback url to Questrade App hub (requires an HTTPS url)
+1) Addapt and browser to:
+
+https://login.questrade.com/oauth2/authorize?client_id=xPUv8rT7YNpbShexCADZAgxQBG225w&response_type=token&redirect_uri=https://2319-24-202-1-165.ngrok-free.app
+
+https://1892-24-202-1-165.ngrok-free.app/#access_token=HTIM4CZT_gQGAjR5nDmgSeDYb52jo9S20&refresh_token=BOJqNe2mLyK7H9ekvYaHejZziQFJ8W4q0&token_type=Bearer&expires_in=1800&api_server=https://api06.iq.questrade.com/
