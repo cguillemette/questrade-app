@@ -4,6 +4,7 @@ import Cookies from 'js-cookie';
 
 import './App.css'
 import Accounts from './Accounts';
+import { RedirectOnPrefix } from './components/RedirectOnPrefix';
 
 export default function App() {
   useEffect(() => {
@@ -26,6 +27,7 @@ export default function App() {
   
   return (
     <div className="App">
+      <RedirectOnPrefix to="http://127.0.0.1:6001" />
       <Accounts />
     </div>
   )

@@ -15,7 +15,7 @@ Also, it features a clean boilerplate that could serve building other apps
 
 [![](https://mermaid.ink/img/pako:eNpVUctugzAQ_BVrT6kEBDA2j0OlpGmkHir1dWrpwbHNQwGMjGmbpvx7Deml9sU7s7Oj8Z6BKyEhg6JRn7xi2qCXXd4hezZve60648pOIBc9ScbNO3Ld6x_0g7arLePHP2rfsOF4dRFt5w50s3oc5WA0ExJtHu4sBw60UresFtbrPPfmYCrZyhwy-xRMH3PIu8n2sdGo51PHITN6lA6MvWBG7mpWatb-B29FbZSGrGDNYMFGWUNbnsGc-jlUWQ_GTuSqK-pyxkfdWLgyph-y9XqmvbI21XjwuGrXQy3mH6g-UrqmIU1YiCWNMSMYC34I0qQIo6AQsR-EDKbJgZ5189QvyMIo9dIoSRNMInsTnzhwgiwg1CPYD0lIYoJpQGKr-lbK5vA9mliTyE9jmvokCbEDcslzf9nIspjF43URzMGnX2gihBE?type=png)](https://mermaid.live/edit#pako:eNpVUctugzAQ_BVrT6kEBDA2j0OlpGmkHir1dWrpwbHNQwGMjGmbpvx7Deml9sU7s7Oj8Z6BKyEhg6JRn7xi2qCXXd4hezZve60648pOIBc9ScbNO3Ld6x_0g7arLePHP2rfsOF4dRFt5w50s3oc5WA0ExJtHu4sBw60UresFtbrPPfmYCrZyhwy-xRMH3PIu8n2sdGo51PHITN6lA6MvWBG7mpWatb-B29FbZSGrGDNYMFGWUNbnsGc-jlUWQ_GTuSqK-pyxkfdWLgyph-y9XqmvbI21XjwuGrXQy3mH6g-UrqmIU1YiCWNMSMYC34I0qQIo6AQsR-EDKbJgZ5189QvyMIo9dIoSRNMInsTnzhwgiwg1CPYD0lIYoJpQGKr-lbK5vA9mliTyE9jmvokCbEDcslzf9nIspjF43URzMGnX2gihBE)
 
-Frontend: React using plain javavscript - http://127.0.0.1:6001
+Frontend: React using plain javavscript - <http://127.0.0.1:6001>
 Backend: Python using Flask
 
 Both are built using a dockerfile that can be ran locally and deployed to cloud of choice.
@@ -26,18 +26,26 @@ For the sake of simplicity, top level folder has the typical AWS SAM project fil
 
 If you use VS Code and Dev Containers extension, you have nothing to install.
 
-In any case you minimally need [Docker](https://www.docker.com/products/docker-desktop).
+To run locally, you minimally need:
 
-If you intend to deploy, you will need the following installed. For more details, refer to [deployment](#deployment).
-
-* [AWS CLI](https://aws.amazon.com/cli/)
-  * From AWS console, create an access key and use `aws configure` to setup authentication
-  * Then login to AWS elastic container registry: `aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws``
-* [SAM CLI](https://github.com/awslabs/aws-sam-cli)
-
-As this app depends on the Questrade API, you will need to setup your own credentials from the [Questrade App Hub](https://www.questrade.com/partner-centre/app-hub).
-
-Once you got your comsumer key set the value in the ./api/.env file.
+- [Docker](https://www.docker.com/products/docker-desktop).
+- [AWS CLI](https://aws.amazon.com/cli/)
+  - From AWS console, create an access key and use `aws configure` to setup authentication
+  - Then login to AWS elastic container registry: `aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws``
+- [Questrade App Hub](https://www.questrade.com/partner-centre/app-hub)
+  - This repo depends on the Questrade API, you will need to setup your own app from their site and ensure you provide an https callback.
+  - To do so, you can use ngrok after fetching your authorization token from their site:
+    ```sh
+    brew install ngrok/ngrok/ngrok
+    ngrok config add-authtoken <INSERT-YOUR-AUTH-TOKEN>
+    ngrok http 6001
+    ```
+  - In api/.env, update CORS_ORIGIN_QUESTRADE_CALLBACK with ngrok generated https URL
+  - From, your Questrade App, copy/paste your consumer key and redirect uri (prior ngrok generated endpoint) to fill in the following URL:
+    ```
+    https://login.questrade.com/oauth2/authorize?client_id=<client id>&response_type=token&redirect_uri=<url>
+    ```
+  - Go through Questrade authorization, then it will redirect to locally running app
 
 ## Running locally
 
@@ -47,7 +55,7 @@ Ensure you have Docker running then call docker-compose:
 docker-compose up --build -d 
 ```
 
-Browse to http://127.0.0.1:6001.
+Browse to <http://127.0.0.1:6001>.
 
 ## Code changes locally
 
@@ -67,13 +75,4 @@ For AWS SAM, you will find up to date deployment instructions [here](https://git
 
 # Auth
 
-We use "Implicit Grant OAuth" flow documented here: https://www.questrade.com/api/documentation/authorization?TSPD_101_R0=08005b7230ab2000a813ef08eeb33a9bf24b1b1e9cee0fd2bec84c626a9eb9c366751f8d0d47dc9108fbb0473f1430009a473cf802d3836dffe94b52ae48a8f00853d9cacbaaeeac611aba93d7d6a48ff7716a6e4794c6fee5a164944928e260
-
-# Notes
-
-1) Add callback url to Questrade App hub (requires an HTTPS url)
-1) Addapt and browser to:
-
-https://login.questrade.com/oauth2/authorize?client_id=xPUv8rT7YNpbShexCADZAgxQBG225w&response_type=token&redirect_uri=https://2319-24-202-1-165.ngrok-free.app
-
-https://1892-24-202-1-165.ngrok-free.app/#access_token=HTIM4CZT_gQGAjR5nDmgSeDYb52jo9S20&refresh_token=BOJqNe2mLyK7H9ekvYaHejZziQFJ8W4q0&token_type=Bearer&expires_in=1800&api_server=https://api06.iq.questrade.com/
+We use "Implicit Grant OAuth" flow documented here: <https://www.questrade.com/api/documentation/authorization?TSPD_101_R0=08005b7230ab2000a813ef08eeb33a9bf24b1b1e9cee0fd2bec84c626a9eb9c366751f8d0d47dc9108fbb0473f1430009a473cf802d3836dffe94b52ae48a8f00853d9cacbaaeeac611aba93d7d6a48ff7716a6e4794c6fee5a164944928e260>
