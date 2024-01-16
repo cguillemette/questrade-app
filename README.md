@@ -1,16 +1,22 @@
-# Mktbot
+# questrade-ui
 
-A simple app that interops with the Questrade API.
+Simple UI that interops with the Questrade API.
 
-- It is also lightweight to setup and deploy if needed.
-- Has hot reloading for both frontend / backend
+Motivation:
+
+I created this app because I felt logging in Questrade was slow. Also I wanted a clean and minimalist way to group all my accounts (registered, non-registered, CAD?USD).
+
+Also, it features a clean boilerplate that could serve building other apps
+
+- Both front-end and back-end use docker Has hot reloading for both frontend / backend
+- It is lightweight to setup and can be deployed if needed.
 
 ## Structure
 
 [![](https://mermaid.ink/img/pako:eNpVUctugzAQ_BVrT6kEBDA2j0OlpGmkHir1dWrpwbHNQwGMjGmbpvx7Deml9sU7s7Oj8Z6BKyEhg6JRn7xi2qCXXd4hezZve60648pOIBc9ScbNO3Ld6x_0g7arLePHP2rfsOF4dRFt5w50s3oc5WA0ExJtHu4sBw60UresFtbrPPfmYCrZyhwy-xRMH3PIu8n2sdGo51PHITN6lA6MvWBG7mpWatb-B29FbZSGrGDNYMFGWUNbnsGc-jlUWQ_GTuSqK-pyxkfdWLgyph-y9XqmvbI21XjwuGrXQy3mH6g-UrqmIU1YiCWNMSMYC34I0qQIo6AQsR-EDKbJgZ5189QvyMIo9dIoSRNMInsTnzhwgiwg1CPYD0lIYoJpQGKr-lbK5vA9mliTyE9jmvokCbEDcslzf9nIspjF43URzMGnX2gihBE?type=png)](https://mermaid.live/edit#pako:eNpVUctugzAQ_BVrT6kEBDA2j0OlpGmkHir1dWrpwbHNQwGMjGmbpvx7Deml9sU7s7Oj8Z6BKyEhg6JRn7xi2qCXXd4hezZve60648pOIBc9ScbNO3Ld6x_0g7arLePHP2rfsOF4dRFt5w50s3oc5WA0ExJtHu4sBw60UresFtbrPPfmYCrZyhwy-xRMH3PIu8n2sdGo51PHITN6lA6MvWBG7mpWatb-B29FbZSGrGDNYMFGWUNbnsGc-jlUWQ_GTuSqK-pyxkfdWLgyph-y9XqmvbI21XjwuGrXQy3mH6g-UrqmIU1YiCWNMSMYC34I0qQIo6AQsR-EDKbJgZ5189QvyMIo9dIoSRNMInsTnzhwgiwg1CPYD0lIYoJpQGKr-lbK5vA9mliTyE9jmvokCbEDcslzf9nIspjF43URzMGnX2gihBE)
 
 Frontend: React using plain javavscript - http://127.0.0.1:6001
-Backend: Python using Flask - 
+Backend: Python using Flask
 
 Both are built using a dockerfile that can be ran locally and deployed to cloud of choice.
 
@@ -25,6 +31,8 @@ In any case you minimally need [Docker](https://www.docker.com/products/docker-d
 If you intend to deploy, you will need the following installed. For more details, refer to [deployment](#deployment).
 
 * [AWS CLI](https://aws.amazon.com/cli/)
+  * From AWS console, create an access key and use `aws configure` to setup authentication
+  * Then login to AWS elastic container registry: `aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws``
 * [SAM CLI](https://github.com/awslabs/aws-sam-cli)
 
 As this app depends on the Questrade API, you will need to setup your own credentials from the [Questrade App Hub](https://www.questrade.com/partner-centre/app-hub).
@@ -33,10 +41,9 @@ Once you got your comsumer key set the value in the ./api/.env file.
 
 ## Running locally
 
-Simply call docker compose:
+Ensure you have Docker running then call docker-compose:
 
 ```sh
-# with hot reloading
 docker-compose up --build -d 
 ```
 
