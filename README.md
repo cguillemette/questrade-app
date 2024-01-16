@@ -6,10 +6,12 @@ Motivation:
 
 I created this app because I felt logging in Questrade was slow. Also I wanted a clean and minimalist way to group all my accounts (registered, non-registered, CAD?USD).
 
-Also, it features a clean boilerplate that could serve building other apps
+Features:
 
-- Both front-end and back-end use docker Has hot reloading for both frontend / backend
-- It is lightweight to setup and can be deployed if needed.
+In addition to adding support for implicit grant oauth, it includes a clean boilerplate that could serve building other apps
+
+- Both front-end and back-end use docker with hot reloading for both frontend / backend
+- It is lightweight to setup and can be deployed if needed to any AWS container based service
 
 ## Structure
 
