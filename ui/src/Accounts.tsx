@@ -22,9 +22,9 @@ export default function Accounts() {
   }, []);
 
   return (
-    <div className="Accounts">
+    <>
       {renderNew(accounts)}
-    </div>
+    </>
   );
 }
 
@@ -64,9 +64,9 @@ function renderAllAccounts(perQuote: PerQuote) {
       return null;
     }
     return (
-      <div className="stock-container">
+      <div key={key} className="stock-container">
         <div className="quote">{key}&nbsp;{renderQuotePrice(values[0])}</div>
-        <div>{values.map(value => renderAccount(value))}</div>
+        <div key={key}>{values.map(value => renderAccount(value))}</div>
         <style>{`
           .stock-container {
             padding-bottom: 20px;
@@ -83,7 +83,7 @@ function renderAccount(account: Account) {
   let gainAmount = (((account.currentPrice / account.averageEntryPrice) - 1) * account.totalCost).toFixed(2) 
   let totalCost = account.totalCost.toFixed(2)
   return (
-    <div className="container-quote">
+    <div key={`${account.symbolId}`} className="container-quote">
       <div className="quote-values-container">
         <div className="average-entry-price">{averageEntryPrice}$</div>
         <div className="gain-container">
