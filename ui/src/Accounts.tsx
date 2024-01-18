@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { Account, Accounts, Asset, Assets, PerQuote } from './types';
 
 export default function Accounts() {
-  const [perQuote, setPerQuote] = useState<Accounts>(new Map<string, Assets>());
+  const [perQuote, setPerQuote] = useState<PerQuote>();
 
   useEffect(() => {
     (async function fetchAccounts() {
