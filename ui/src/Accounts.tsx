@@ -3,29 +3,34 @@ import { useEffect, useState } from 'react';
 import { Account, Accounts, Asset, Assets, PerQuote } from './types';
 
 export default function Accounts() {
-  const [accounts, setAccounts] = useState<Accounts>(new Map<string, Assets>());
+  const [perQuote, setPerQuote] = useState<Accounts>(new Map<string, Assets>());
 
   useEffect(() => {
     (async function fetchAccounts() {
-      const response = await fetch("http://127.0.0.1:6002/api/accounts", {
-        credentials: 'include'
-      }).catch(e => {
-        console.error(`Unexpected error ${e}`)
-      });
       try {
+        const response = await fetch("http://127.0.0.1:6002/api/accounts", {
+          credentials: 'include'
+        });
         const data = await response?.json();
-        setAccounts(new Map(Object.entries(data.accounts)));
+        const accounts = new Map(Object.entries(data.accounts)) as Accounts;
+
+        let perQuote: PerQuote = new PerQuote()
+        for (const accountId of accounts.keys()) {
+          let assets = accounts.get(accountId);
+          assets?.forEach(asset => {
+            let current = perQuote.get(asset.symbol) ?? new Array<Asset>();
+            current.push(asset);
+            perQuote.set(asset.symbol, current)
+          })
+        }
+        setPerQuote(perQuote);
       } catch (e) {
         console.error(`Unexpected error ${e}`)
       }
     })();
   }, []);
 
-  return (
-    <>
-      {renderNew(accounts)}
-    </>
-  );
+  return renderNew(perQuote);
 }
 
 function renderQuotePrice(account: Account) {
@@ -57,7 +62,7 @@ function renderQuotePrice(account: Account) {
   )
 }
 
-function renderAllAccounts(perQuote: PerQuote) {
+function renderBalance(perQuote: PerQuote) {
   return Array.from(perQuote.keys()).map((key) => {
     let values = perQuote.get(key);
     if (!values) {
@@ -135,20 +140,7 @@ function renderAccount(account: Account) {
   )
 }
 
-function renderBalance(accounts: Accounts) {
-  let perQuote: PerQuote = new PerQuote()
-  for (const accountId of accounts.keys()) {
-    let assets = accounts.get(accountId);
-    assets?.forEach(asset => {
-      let current = perQuote.get(asset.symbol) ?? new Array<Asset>();
-      current.push(asset);
-      perQuote.set(asset.symbol, current)
-    })
-  }
-  return renderAllAccounts(perQuote)
-}
-
-function renderNew(accounts: Map<string, Assets>) {
+function renderNew(perQuote: PerQuote) {
   return (
     <div className="text-light rounded-0">
       <div className="mt-2 mb-2">
@@ -156,7 +148,7 @@ function renderNew(accounts: Map<string, Assets>) {
           <span style={{fontWeight: 600}}>
             <br className="v-block d-sm-none"/>
           </span>
-          {renderBalance(accounts)}
+          {renderBalance(perQuote)}
         </h1>
         <style>{`
           .display-2  {
