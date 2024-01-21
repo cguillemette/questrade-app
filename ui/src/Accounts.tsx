@@ -1,9 +1,9 @@
 
 import { useEffect, useState } from 'react';
-import { Account, Accounts, Asset, Assets, PerQuote } from './types';
+import { Account, Accounts, Asset, PerQuote } from './types';
 
 export default function Accounts() {
-  const [perQuote, setPerQuote] = useState<PerQuote>();
+  const [perQuote, setPerQuote] = useState<PerQuote>(new PerQuote());
 
   useEffect(() => {
     (async function fetchAccounts() {
