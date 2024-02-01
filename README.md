@@ -32,6 +32,7 @@ To run locally, you minimally need:
 
 - [Docker](https://www.docker.com/products/docker-desktop).
 - [AWS CLI](https://aws.amazon.com/cli/)
+  - The docker image depends on images in the AWS Elastic Cloud Registry, therefore you will need to be authenticated on AWS
   - From AWS console, create an access key and use `aws configure` to setup authentication
   - Then login to AWS elastic container registry:
 
