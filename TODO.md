@@ -1,0 +1,2 @@
+- Create animated GIF to showcase the app
+- Add unit tests

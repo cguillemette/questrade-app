@@ -144,5 +144,4 @@ dmypy.json
 .pnpm-store/
 
 # Custom
-TODO.md
 .crossnote/
