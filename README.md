@@ -2,13 +2,13 @@
 
 Simple UI that interops with the Questrade API.
 
-Motivation:
+Why?
 
-I created this app because I felt logging in Questrade was slow. Also I wanted a clean and minimalist way to group all my accounts (registered, non-registered, CAD?USD).
+Created this app because I felt the process of going on Questrade and authenticating to watch my assets was slow. As each time, I was required to 2FA. Sure, I could turn it off but I also felt there was too much information for what I needed. Therefore I built this app to display my accounts in a minimalist way grouping group all my accounts by stock versus per account.
 
-Features:
+Features
 
-In addition to adding support for implicit grant oauth, it includes a clean boilerplate that could serve building other apps
+In addition to adding support for implicit grant oauth, it includes a clean boilerplate that could serve building other apps.
 
 - Both front-end and back-end use docker with hot reloading for both frontend / backend
 - It is lightweight to setup and can be deployed if needed to any AWS container based service
@@ -33,20 +33,29 @@ To run locally, you minimally need:
 - [Docker](https://www.docker.com/products/docker-desktop).
 - [AWS CLI](https://aws.amazon.com/cli/)
   - From AWS console, create an access key and use `aws configure` to setup authentication
-  - Then login to AWS elastic container registry: `aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws``
+  - Then login to AWS elastic container registry:
+
+  ```sh
+  aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws
+  ```
+
 - [Questrade App Hub](https://www.questrade.com/partner-centre/app-hub)
   - This repo depends on the Questrade API, you will need to setup your own app from their site and ensure you provide an https callback.
   - To do so, you can use ngrok after fetching your authorization token from their site:
+
     ```sh
     brew install ngrok/ngrok/ngrok
     ngrok config add-authtoken <INSERT-YOUR-AUTH-TOKEN>
     ngrok http 6001
     ```
+
   - In api/.env, update CORS_ORIGIN_QUESTRADE_CALLBACK with ngrok generated https URL
   - From, your Questrade App, copy/paste your consumer key and redirect uri (prior ngrok generated endpoint) to fill in the following URL:
-    ```
+
+    ```sh
     https://login.questrade.com/oauth2/authorize?client_id=<client id>&response_type=token&redirect_uri=<url>
     ```
+
   - Go through Questrade authorization, then it will redirect to locally running app
 
 ## Running locally
