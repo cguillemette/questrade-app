@@ -1,36 +1,9 @@
+import { Account, PerQuote } from './types';
 
-import { useEffect, useState } from 'react';
-import { Account, Accounts, Asset, PerQuote } from './types';
-
-export default function Accounts() {
-  const [perQuote, setPerQuote] = useState<PerQuote>(new PerQuote());
-
-  useEffect(() => {
-    (async function fetchAccounts() {
-      try {
-        const response = await fetch("http://127.0.0.1:6002/api/accounts", {
-          credentials: 'include'
-        });
-        const data = await response?.json();
-        const accounts = new Map(Object.entries(data.accounts)) as Accounts;
-
-        let perQuote: PerQuote = new PerQuote()
-        for (const accountId of accounts.keys()) {
-          let assets = accounts.get(accountId);
-          assets?.forEach(asset => {
-            let current = perQuote.get(asset.symbol) ?? new Array<Asset>();
-            current.push(asset);
-            perQuote.set(asset.symbol, current)
-          })
-        }
-        setPerQuote(perQuote);
-      } catch (e) {
-        console.error(`Unexpected error ${e}`)
-      }
-    })();
-  }, []);
-
-  return renderNew(perQuote);
+export default function Portfolio(props: {
+  perQuote: PerQuote
+}) {
+  return renderNew(props.perQuote);
 }
 
 function renderQuotePrice(account: Account) {

@@ -1,12 +1,30 @@
 
-import { useEffect } from 'react'
 import Cookies from 'js-cookie';
-
-import './App.css'
-import Accounts from './Accounts';
+import { useEffect, useState } from 'react';
+import './App.css';
+import Portfolio from './Portfolio';
 import { RedirectOnPrefix } from './components/RedirectOnPrefix';
+import { Accounts, Asset, PerQuote } from './types';
 
 export default function App() {
+  const [questradeLoginUrl, setQuestradeLoginUrl] = useState<string | null>(null);
+  const [fetchedAccountsAtLeastOnce, setFetchedAccountsAtLeastOnce] = useState(false);
+  const [perQuote, setPerQuote] = useState<PerQuote | null>(null);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        (async () => {
+          const response = await fetch("http://127.0.0.1:6002/api/questrade/login");
+          const data = await response?.json();
+          setQuestradeLoginUrl(data?.url);
+        })();
+      } catch (e) {
+        setQuestradeLoginUrl(null);
+      }
+    })();
+  }, []); 
+
   useEffect(() => {
     const accessToken = Cookies.get("access_token")
 
@@ -24,11 +42,54 @@ export default function App() {
         Cookies.set("expires_at", Math.floor(parseInt(expiresIn) + new Date().getTime() / 1000 - 300).toString());
     }
   }, []);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        setFetchedAccountsAtLeastOnce(false);
+        const response = await fetch("http://127.0.0.1:6002/api/accounts", {
+          credentials: 'include'
+        });
+        const data = await response?.json();
+        const accounts = new Map(Object.entries(data.accounts)) as Accounts;
+
+        let perQuote: PerQuote = new PerQuote()
+        for (const accountId of accounts.keys()) {
+          let assets = accounts.get(accountId);
+          assets?.forEach(asset => {
+            let current = perQuote.get(asset.symbol) ?? new Array<Asset>();
+            current.push(asset);
+            perQuote.set(asset.symbol, current)
+          })
+        }
+        setPerQuote(perQuote);
+      } catch (e) {
+        console.error(`Unexpected error ${e}`)
+      } finally {
+        setFetchedAccountsAtLeastOnce(true);
+      }
+    })();
+  }, [])
+
+  function renderLogin() {
+    if (fetchedAccountsAtLeastOnce && perQuote === null && questradeLoginUrl) {
+      return <button onClick={() => {
+        window.location.href = questradeLoginUrl;
+      }}>Login</button>;
+    }
+  }
+
+  function renderPortfolio() {
+    if (fetchedAccountsAtLeastOnce && perQuote) {
+      return <Portfolio perQuote={perQuote} />;
+    }
+  }
   
   return (
     <div className="App">
       <RedirectOnPrefix to="http://127.0.0.1:6001" />
-      <Accounts />
+      {renderLogin()}
+      {renderPortfolio()}
     </div>
   )
 }

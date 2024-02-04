@@ -1,3 +1,4 @@
 - Mock data from Questrade to prevent that step to ease first run
 - Create animated GIF to showcase the app
 - Add unit tests
+- Add lint

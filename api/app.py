@@ -14,6 +14,7 @@ load_dotenv()
 
 cors_origin_local=os.getenv('CORS_ORIGIN_LOCAL')
 cors_origin_questrade_callback=os.getenv('CORS_ORIGIN_QUESTRADE_CALLBACK')
+origin_questrade_client_id=os.getenv('QUESTRADE_CLIENT_ID')
 
 application = Flask(__name__, static_folder="./static")
 CORS(
@@ -29,8 +30,19 @@ log = logging.getLogger(__name__)
 def too_many_requests(e):
     return jsonify(error=str(e)), 429
 
+@application.route('/api/questrade/login/', methods=['GET'])
+def questrade_client_id():
+    url = (
+        f'https://login.questrade.com/oauth2/authorize?'
+        f'client_id={origin_questrade_client_id}&'
+        f'response_type=token&redirect_uri={cors_origin_questrade_callback}'
+    )
+    return make_response(jsonify({
+        "url": url,
+    }), 200)
+
 @application.route('/api/accounts', methods=['GET'])
-def api():
+def accounts():
     access_token = request.cookies.get('access_token')
     refresh_token = request.cookies.get('refresh_token')
     expires_at = request.cookies.get('expires_at')
@@ -70,7 +82,7 @@ def api():
                 "result_total_cost": result_total_cost
             }}), 200)
     except Exception as e:
-        log.info(e)
+        log.error(e)
         abort(500, "Try again later.")
     finally:
         resp.set_cookie('access_token', tokens['access_token'])

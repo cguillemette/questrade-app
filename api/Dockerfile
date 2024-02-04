@@ -1,8 +1,4 @@
-# base
-
-FROM public.ecr.aws/docker/library/python:3.8.12-slim-buster
-
-COPY --from=public.ecr.aws/awsguru/aws-lambda-adapter:0.7.1 /lambda-adapter /opt/extensions/lambda-adapter
+FROM python:3.8.18-bullseye
 
 WORKDIR /workspace/api
 
