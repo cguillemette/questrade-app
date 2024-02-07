@@ -1,6 +1,6 @@
-# questrade-ui
+# questrade-app
 
-Simple UI that interops with the Questrade API.
+Simple app that interops with the Questrade API.
 
 Why?
 
