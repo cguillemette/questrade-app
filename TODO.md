@@ -3,3 +3,4 @@
 - Create animated GIF to showcase the app
 - Add unit tests
 - Add lint
+- No grouping per account

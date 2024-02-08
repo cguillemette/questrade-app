@@ -15,24 +15,29 @@ function renderQuantity(account: Account) {
   )
 }
 
-function renderStatus(account: Account) {
+function resolveColor(account: Account) {
   let fontColor = "grey"
-  if (account.currentPrice < account.averageEntryPrice) fontColor = "red"
-  if (account.currentPrice > account.averageEntryPrice) fontColor = "green"
+  if (account.currentPrice < account.averageEntryPrice) {
+    fontColor = "red";
+  }
+  if (account.currentPrice > account.averageEntryPrice) {
+    fontColor = "green";
+  }
+  return fontColor;
+}
+
+function renderStatus(account: Account) {
   return (
-    <div className={`stock-price-status ${fontColor}`}>
+    <div className={`stock-price-status ${resolveColor(account)}`}>
       ·
     </div>
   )
 }
 
 function renderQuotePrice(account: Account) {
-  let fontColor = "grey"
-  if (account.currentPrice < account.averageEntryPrice) fontColor = "grey"
-  if (account.currentPrice > account.averageEntryPrice) fontColor = "green"
   let price = account.currentPrice.toFixed(2)
   return (
-    <div className={`stock-price ${fontColor} top`}>
+    <div className={`stock-price top`}>
       {price}$
     </div>
   )

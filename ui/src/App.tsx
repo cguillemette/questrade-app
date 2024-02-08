@@ -65,6 +65,7 @@ export default function App() {
           perQuote.set(asset.symbol, current)
         })
       }
+      console.log(perQuote);
       setPerQuote(perQuote);
     } catch (e) {
       console.error(`Unexpected error ${e}`)
@@ -73,7 +74,6 @@ export default function App() {
       setIsFetchingAccounts(false);
     }
   }
-
 
   useEffect(() => {
    fetchAccounts();
@@ -89,6 +89,7 @@ export default function App() {
     if (fetchedAccountsAtLeastOnce && perQuote) {
       return <button onClick={() => {
         clearCookies();
+        window.location.reload();
       }}>Logout</button>;
     }
   }

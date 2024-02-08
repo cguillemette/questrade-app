@@ -71,7 +71,6 @@ def accounts():
         for _ in account_id:
             account_positions = api.get_account_positions(_)
             positions[_] = account_positions
-            log.error(positions)
             result_market_value += functools.reduce(operator.add, map(market_value, positions[_]))
             result_total_cost += functools.reduce(operator.add, map(total_cost, positions[_]))
 
