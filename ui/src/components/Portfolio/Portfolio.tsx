@@ -1,5 +1,4 @@
 import { Account, PerQuote } from '../../types';
-
 import './Portfolio.css';
 
 export default function Portfolio(props: {
@@ -8,15 +7,34 @@ export default function Portfolio(props: {
   return renderNew(props.perQuote);
 }
 
-function renderQuotePrice(account: Account) {
+function renderQuantity(account: Account) {
+  return (
+    <div className={`quantity`}>
+      x {account.openQuantity}
+    </div>
+  )
+}
+
+function renderStatus(account: Account) {
   let fontColor = "grey"
   if (account.currentPrice < account.averageEntryPrice) fontColor = "red"
   if (account.currentPrice > account.averageEntryPrice) fontColor = "green"
+  return (
+    <div className={`stock-price-status ${fontColor}`}>
+      ·
+    </div>
+  )
+}
+
+function renderQuotePrice(account: Account) {
+  let fontColor = "grey"
+  if (account.currentPrice < account.averageEntryPrice) fontColor = "grey"
+  if (account.currentPrice > account.averageEntryPrice) fontColor = "green"
   let price = account.currentPrice.toFixed(2)
   return (
-    <span className={`price ${fontColor}`}>
+    <div className={`stock-price ${fontColor} top`}>
       {price}$
-    </span>
+    </div>
   )
 }
 
@@ -28,7 +46,15 @@ function renderBalance(perQuote: PerQuote) {
     }
     return (
       <div key={key} className="stock-container">
-        <div className="quote">{key}&nbsp;{renderQuotePrice(values[0])}</div>
+        <div className="quote-container">
+          <div className="quote">
+            {key}
+          </div>
+          <div className="status-container">
+            {renderQuantity(values[0])}
+            {renderStatus(values[0])}
+          </div>
+        </div>
         <div key={key}>{values.map(value => renderAccount(value))}</div>
       </div>
     )
@@ -39,16 +65,23 @@ function renderAccount(account: Account) {
   let averageEntryPrice = account.averageEntryPrice.toFixed(2)
   let gainPercentage = (((account.currentPrice / account.averageEntryPrice) - 1) * 100).toFixed(2)
   let gainAmount = (((account.currentPrice / account.averageEntryPrice) - 1) * account.totalCost).toFixed(2) 
+  let currentMarketValue = account.currentMarketValue.toFixed(2)
   let totalCost = account.totalCost.toFixed(2)
   return (
     <div key={`${account.symbolId}`} className="container-quote">
       <div className="quote-values-container">
-        <div className="average-entry-price">{averageEntryPrice}$</div>
         <div className="gain-container">
-          <div className="gain">{gainPercentage}%</div>
-          <div className="gain">{gainAmount}$</div>
+          {renderQuotePrice(account)}
+          <div className="average-entry-price bottom">{averageEntryPrice}$</div>
         </div>
-        <div className="total-cost">{totalCost}$</div>
+        <div className="gain-container">
+          <div className="gain top">{gainPercentage}%</div>
+          <div className="gain bottom">{gainAmount}$</div>
+        </div>
+        <div className="gain-container">
+          <div className="total-cost top">{currentMarketValue}$</div>
+          <div className="total-cost bottom">{totalCost}$</div>
+        </div>
       </div>
     </div>
   )
@@ -56,15 +89,8 @@ function renderAccount(account: Account) {
 
 function renderNew(perQuote: PerQuote) {
   return (
-    <div className="text-light rounded-0">
-      <div className="mt-2 mb-2">
-        <h1 className="display-2 mb-3" style={{fontWeight: 300}}>
-          <span style={{fontWeight: 600}}>
-            <br className="v-block d-sm-none"/>
-          </span>
-          {renderBalance(perQuote)}
-        </h1>
-      </div>
+    <div className="balance-container">
+      {renderBalance(perQuote)}
     </div>
   )
 }

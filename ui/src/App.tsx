@@ -111,6 +111,7 @@ export default function App() {
       <div style={{
         display: 'flex',
         justifyContent: 'space-between',
+        marginBottom: '2rem'
       }}>
         {renderLoginLogout()}
         {renderRefreshButton()}
