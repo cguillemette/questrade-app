@@ -1,4 +1,6 @@
-import { Account, PerQuote } from './types';
+import { Account, PerQuote } from '../../types';
+
+import './Portfolio.css';
 
 export default function Portfolio(props: {
   perQuote: PerQuote
@@ -14,23 +16,6 @@ function renderQuotePrice(account: Account) {
   return (
     <span className={`price ${fontColor}`}>
       {price}$
-      <style>{`
-      .stock-container {
-        padding-bottom: 20px;
-      }
-      .price {
-        font-size: 75%;
-      }
-      .red {
-        color: #ff3939e6;
-      }
-      .green {
-        color: #46da46e6;
-      }
-      .grey {
-        color: #cccccc;
-      }
-      `}</style>
     </span>
   )
 }
@@ -45,11 +30,6 @@ function renderBalance(perQuote: PerQuote) {
       <div key={key} className="stock-container">
         <div className="quote">{key}&nbsp;{renderQuotePrice(values[0])}</div>
         <div key={key}>{values.map(value => renderAccount(value))}</div>
-        <style>{`
-          .stock-container {
-            padding-bottom: 20px;
-          }
-        `}</style>
       </div>
     )
   })
@@ -70,45 +50,6 @@ function renderAccount(account: Account) {
         </div>
         <div className="total-cost">{totalCost}$</div>
       </div>
-      <style>{`
-        .container-quote {
-          padding-bottom: 0px;
-        }
-        .quote-container {
-          font-size: 1rem;
-        }
-        .quote-values-container {
-          display: flex;
-        }
-        .gain-container {
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-        }
-        .id {
-          font-size: 30%;
-        }
-        .quote {
-          padding-right: 10px;
-          font-weight: bold;
-          font-size: 100%;
-          line-height: initial;
-        }
-        .gain {
-          padding-left: 10px;
-          padding-right: 10px;
-          font-size: 35%;
-        }
-        .average-entry-price {
-          padding-left: 10px;
-          padding-right: 10px;
-          font-size: 90%;
-        }
-        .total-cost {
-          padding-left: 20px;
-          font-size: 90%;
-        }
-      `}</style>
     </div>
   )
 }
@@ -123,25 +64,6 @@ function renderNew(perQuote: PerQuote) {
           </span>
           {renderBalance(perQuote)}
         </h1>
-        <style>{`
-          .display-2  {
-            text-shadow: 0 5px 10px rgba(0,0,0,0.3);
-            color: rgba(255,255,255,0.9);
-          }
-          .lead {
-            font-size: 3em;
-            opacity: 0.7;
-          }
-          @media (max-width: 767px) {
-            .display-2 {
-              font-size: 3em;
-              margin-bottom: 1em;
-            }
-            .lead {
-              font-size: 1.5em;
-            }
-          }
-        `}</style>
       </div>
     </div>
   )

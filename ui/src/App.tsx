@@ -2,12 +2,12 @@
 import Cookies from 'js-cookie';
 import { useEffect, useState } from 'react';
 import './App.css';
-import Portfolio from './Portfolio';
-import { RedirectOnPrefix } from './components/RedirectOnPrefix';
-import { Accounts, Asset, PerQuote } from './types';
+import Portfolio from './components/Portfolio/Portfolio';
 import { LoadingIndicator } from './components/LoadingIndicator/LoadingIndicator';
+import { RedirectOnPrefix } from './components/RedirectOnPrefix';
 import { RefreshButton } from './components/RefreshButton/RefreshButton';
-import { clearCookies } from './utils';
+import { Accounts, Asset, PerQuote } from './types';
+import { clearCookies } from './utils/cookies';
 
 export default function App() {
   const [questradeLoginUrl, setQuestradeLoginUrl] = useState<string | null>(null);
