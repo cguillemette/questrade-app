@@ -6,7 +6,7 @@ import Portfolio from './Portfolio';
 import { RedirectOnPrefix } from './components/RedirectOnPrefix';
 import { Accounts, Asset, PerQuote } from './types';
 import { LoadingIndicator } from './components/LoadingIndicator/LoadingIndicator';
-import { RefreshButton } from './components/RefreshButton';
+import { RefreshButton } from './components/RefreshButton/RefreshButton';
 
 export default function App() {
   const [questradeLoginUrl, setQuestradeLoginUrl] = useState<string | null>(null);
@@ -85,13 +85,10 @@ export default function App() {
       }}>Login</button>;
     }
   }
-  function handleFetchAccounts() {
-    fetchAccounts();
-  }
 
   function renderRefreshButton() {
     if (fetchedAccountsAtLeastOnce) {
-      return <RefreshButton onRefresh={handleFetchAccounts} />
+      return <RefreshButton onRefresh={fetchAccounts} />
     }
   }
 
