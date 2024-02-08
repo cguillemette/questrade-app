@@ -7,6 +7,7 @@ import { RedirectOnPrefix } from './components/RedirectOnPrefix';
 import { Accounts, Asset, PerQuote } from './types';
 import { LoadingIndicator } from './components/LoadingIndicator/LoadingIndicator';
 import { RefreshButton } from './components/RefreshButton/RefreshButton';
+import { clearCookies } from './utils';
 
 export default function App() {
   const [questradeLoginUrl, setQuestradeLoginUrl] = useState<string | null>(null);
@@ -78,16 +79,22 @@ export default function App() {
    fetchAccounts();
   }, [])
 
-  function renderLogin() {
+  function renderLoginLogout() {
     if (fetchedAccountsAtLeastOnce && perQuote === null && questradeLoginUrl) {
       return <button onClick={() => {
         window.location.href = questradeLoginUrl;
       }}>Login</button>;
     }
+
+    if (fetchedAccountsAtLeastOnce && perQuote) {
+      return <button onClick={() => {
+        clearCookies();
+      }}>Logout</button>;
+    }
   }
 
   function renderRefreshButton() {
-    if (fetchedAccountsAtLeastOnce) {
+    if (fetchedAccountsAtLeastOnce && perQuote) {
       return <RefreshButton onRefresh={fetchAccounts} />
     }
   }
@@ -101,8 +108,13 @@ export default function App() {
   return (
     <div className="App">
       <RedirectOnPrefix to="http://127.0.0.1:6001" />
-      {renderLogin()}
-      {renderRefreshButton()}
+      <div style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+      }}>
+        {renderLoginLogout()}
+        {renderRefreshButton()}
+      </div>
       <LoadingIndicator loading={isFetchingAccounts}>
         {renderPortfolio()}
       </LoadingIndicator>
