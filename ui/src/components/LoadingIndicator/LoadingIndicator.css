@@ -1,0 +1,7 @@
+.loading-container {
+  position: relative;
+}
+
+.loading {
+  filter: blur(3px);
+}

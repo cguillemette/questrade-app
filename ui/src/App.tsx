@@ -5,10 +5,13 @@ import './App.css';
 import Portfolio from './Portfolio';
 import { RedirectOnPrefix } from './components/RedirectOnPrefix';
 import { Accounts, Asset, PerQuote } from './types';
+import { LoadingIndicator } from './components/LoadingIndicator/LoadingIndicator';
+import { RefreshButton } from './components/RefreshButton';
 
 export default function App() {
   const [questradeLoginUrl, setQuestradeLoginUrl] = useState<string | null>(null);
   const [fetchedAccountsAtLeastOnce, setFetchedAccountsAtLeastOnce] = useState(false);
+  const [isFetchingAccounts, setIsFetchingAccounts] = useState(false);
   const [perQuote, setPerQuote] = useState<PerQuote | null>(null);
 
   useEffect(() => {
@@ -43,32 +46,36 @@ export default function App() {
     }
   }, []);
 
-  useEffect(() => {
-    (async () => {
-      try {
-        setFetchedAccountsAtLeastOnce(false);
-        const response = await fetch("http://127.0.0.1:6002/api/accounts", {
-          credentials: 'include'
-        });
-        const data = await response?.json();
-        const accounts = new Map(Object.entries(data.accounts)) as Accounts;
+  const fetchAccounts = async () => {
+    try {
+      setIsFetchingAccounts(true);
+      const response = await fetch("http://127.0.0.1:6002/api/accounts", {
+        credentials: 'include'
+      });
+      const data = await response?.json();
+      const accounts = new Map(Object.entries(data.accounts)) as Accounts;
 
-        let perQuote: PerQuote = new PerQuote()
-        for (const accountId of accounts.keys()) {
-          let assets = accounts.get(accountId);
-          assets?.forEach(asset => {
-            let current = perQuote.get(asset.symbol) ?? new Array<Asset>();
-            current.push(asset);
-            perQuote.set(asset.symbol, current)
-          })
-        }
-        setPerQuote(perQuote);
-      } catch (e) {
-        console.error(`Unexpected error ${e}`)
-      } finally {
-        setFetchedAccountsAtLeastOnce(true);
+      let perQuote: PerQuote = new PerQuote()
+      for (const accountId of accounts.keys()) {
+        let assets = accounts.get(accountId);
+        assets?.forEach(asset => {
+          let current = perQuote.get(asset.symbol) ?? new Array<Asset>();
+          current.push(asset);
+          perQuote.set(asset.symbol, current)
+        })
       }
-    })();
+      setPerQuote(perQuote);
+    } catch (e) {
+      console.error(`Unexpected error ${e}`)
+    } finally {
+      setFetchedAccountsAtLeastOnce(true);
+      setIsFetchingAccounts(false);
+    }
+  }
+
+
+  useEffect(() => {
+   fetchAccounts();
   }, [])
 
   function renderLogin() {
@@ -76,6 +83,15 @@ export default function App() {
       return <button onClick={() => {
         window.location.href = questradeLoginUrl;
       }}>Login</button>;
+    }
+  }
+  function handleFetchAccounts() {
+    fetchAccounts();
+  }
+
+  function renderRefreshButton() {
+    if (fetchedAccountsAtLeastOnce) {
+      return <RefreshButton onRefresh={handleFetchAccounts} />
     }
   }
 
@@ -89,7 +105,10 @@ export default function App() {
     <div className="App">
       <RedirectOnPrefix to="http://127.0.0.1:6001" />
       {renderLogin()}
-      {renderPortfolio()}
+      {renderRefreshButton()}
+      <LoadingIndicator loading={isFetchingAccounts}>
+        {renderPortfolio()}
+      </LoadingIndicator>
     </div>
   )
 }
