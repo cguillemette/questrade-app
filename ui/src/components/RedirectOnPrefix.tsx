@@ -8,6 +8,4 @@ export const RedirectOnPrefix = (props: { to: string }) => {
       window.location.href = `http://127.0.0.1:6001/${window.location.hash}`;
     }
   }, [props.to]);
-
-  return null;
 };

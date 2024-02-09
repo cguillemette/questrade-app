@@ -32,18 +32,24 @@ export default function App() {
   useEffect(() => {
     const accessToken = Cookies.get("access_token")
 
+    let cookiesSet = false;
     const fragment = window.location.hash.substring(1);
     let fragmentSplitted = fragment.split('&');
     fragmentSplitted.map(function(f) {
         let pair = f.split("=");
         if (pair.length === 2) {
             Cookies.set(pair[0], pair[1]);
+            cookiesSet = true;
         }
     })
   
     if (accessToken != Cookies.get("access_token")) {
         const expiresIn = Cookies.get("expires_in") || "1800";
         Cookies.set("expires_at", Math.floor(parseInt(expiresIn) + new Date().getTime() / 1000 - 300).toString());
+    }
+
+    if (cookiesSet) {
+      window.location.hash = "";
     }
   }, []);
 
@@ -65,7 +71,6 @@ export default function App() {
           perQuote.set(asset.symbol, current)
         })
       }
-      console.log(perQuote);
       setPerQuote(perQuote);
     } catch (e) {
       console.error(`Unexpected error ${e}`)
@@ -81,9 +86,15 @@ export default function App() {
 
   function renderLoginLogout() {
     if (fetchedAccountsAtLeastOnce && perQuote === null && questradeLoginUrl) {
-      return <button onClick={() => {
-        window.location.href = questradeLoginUrl;
-      }}>Login</button>;
+      return <button style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          gap: 10,
+        }} onClick={() => {
+          window.location.href = questradeLoginUrl;
+        }}><img width="75px" src="https://upload.wikimedia.org/wikipedia/en/thumb/d/d9/Questrade_logo.svg/1024px-Questrade_logo.svg.png" /><span>Login</span>
+      </button>;
     }
 
     if (fetchedAccountsAtLeastOnce && perQuote) {

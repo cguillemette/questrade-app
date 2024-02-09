@@ -51,8 +51,7 @@ def accounts():
     if access_token is None or refresh_token is None or expires_at is None or api_server is None:
         return abort(401, "Unauthorized")       
 
-    flow = ImplicitOAuthFlow(access_token, refresh_token, expires_at, api_server)
-    tokens = flow.get_valid_access_token()
+    tokens = ImplicitOAuthFlow(access_token, refresh_token, expires_at, api_server).get_valid_access_token()
 
     def market_value(element):
         return element['currentMarketValue']
@@ -60,7 +59,6 @@ def accounts():
     def total_cost(element):
         return element['totalCost']
 
-    resp = make_response(f"Unexpected error occured.", 400)
     try:
         api = API(tokens['access_token'], tokens['api_server'])
         account_id = api.get_account_id()
@@ -82,7 +80,7 @@ def accounts():
             }}), 200)
     except Exception as e:
         log.error(e)
-        abort(500, "Try again later.")
+        resp = make_response("Unexpected error occured.", 500)
     finally:
         resp.set_cookie('access_token', tokens['access_token'])
         resp.set_cookie('refresh_token', tokens['refresh_token'])
