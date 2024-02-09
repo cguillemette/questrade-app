@@ -1,7 +1,3 @@
-.stock-container {
-  padding-bottom: 15px;
-}
-
 .stock-price {
   font-weight: bolder;
 }
@@ -51,9 +47,20 @@
 }
 
 .balance-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  
+  gap: 10px;
+
   font-size: 3rem;
   text-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
   color: rgba(255, 255, 255, 0.9);
+}
+
+.balance-container > .stock-container {
+  border-left: 1px solid rgba(255, 255, 255, 0.421);
+  padding-left: 10px;
 }
 
 .top {

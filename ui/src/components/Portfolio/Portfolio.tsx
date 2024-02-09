@@ -60,7 +60,9 @@ function renderBalance(perQuote: PerQuote) {
             {renderStatus(values[0])}
           </div>
         </div>
-        <div key={key}>{values.map(value => renderAccount(value))}</div>
+        <div key={key}>
+          {values.map(value => renderAccount(value))}
+        </div>
       </div>
     )
   })
