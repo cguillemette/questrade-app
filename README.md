@@ -2,16 +2,20 @@
 
 Simple app that interops with the Questrade API.
 
-Why?
+**Why?**
 
-Created this app because I felt the process of going on Questrade and authenticating to watch my assets was slow. As each time, I was required to 2FA. Sure, I could turn it off but I also felt there was too much information for what I needed. Therefore I built this app to display my accounts in a minimalist way grouping group all my accounts by stock versus per account.
+Ease watching my assets in a minimalist way and to skip the lengthy process of going on Questrade authentication.
 
-Features
+**Features**
 
-In addition to adding support for implicit grant oauth, it includes a clean boilerplate that could serve building other apps.
+In addition to adding support for implicit grant oauth to Questrade API, it includes a clean boilerplate that could serve building other apps.
 
 - Both front-end and back-end use docker with hot reloading for both frontend / backend
-- It is lightweight to setup and can be deployed if needed to any container based service
+- It is lightweight to setup and can be deployed if needed to any container based provider
+
+**Demo**
+
+<img alt="demo" src="doc/screenshot.png" width="550" />
 
 ## Stack
 
@@ -19,11 +23,7 @@ In addition to adding support for implicit grant oauth, it includes a clean boil
 
 Both are built using a dockerfile that can be ran locally and deployed to cloud provider of choice.
 
-For the sake of simplicity, top level folder has the typical AWS SAM project files to ease deployment on AWS. That can be changed since it doesn't depend on any AWS services, useful if you intend to deploy on another cloud provider.
-
 ## Pre-requisites
-
-If you use VS Code and Dev Containers extension, you have nothing to install.
 
 To run locally, you minimally need:
 

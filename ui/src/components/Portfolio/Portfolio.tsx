@@ -1,4 +1,4 @@
-import { Account, PerQuote } from '../../types';
+import { Asset, PerQuote } from '../../types';
 import './Portfolio.css';
 
 export default function Portfolio(props: {
@@ -7,35 +7,35 @@ export default function Portfolio(props: {
   return renderNew(props.perQuote);
 }
 
-function renderQuantity(account: Account) {
+function renderQuantity(asset: Asset) {
   return (
     <div className={`quantity`}>
-      x {account.openQuantity}
+      x {asset.openQuantity}
     </div>
   )
 }
 
-function resolveColor(account: Account) {
+function resolveColor(asset: Asset) {
   let fontColor = "grey"
-  if (account.currentPrice < account.averageEntryPrice) {
+  if (asset.currentPrice < asset.averageEntryPrice) {
     fontColor = "red";
   }
-  if (account.currentPrice > account.averageEntryPrice) {
+  if (asset.currentPrice > asset.averageEntryPrice) {
     fontColor = "green";
   }
   return fontColor;
 }
 
-function renderStatus(account: Account) {
+function renderStatus(asset: Asset) {
   return (
-    <div className={`stock-price-status ${resolveColor(account)}`}>
+    <div className={`stock-price-status ${resolveColor(asset)}`}>
       ·
     </div>
   )
 }
 
-function renderQuotePrice(account: Account) {
-  let price = account.currentPrice.toFixed(2)
+function renderQuotePrice(asset: Asset) {
+  let price = asset.currentPrice.toFixed(2)
   return (
     <div className={`stock-price top`}>
       {price}$
@@ -68,17 +68,17 @@ function renderBalance(perQuote: PerQuote) {
   })
 }
 
-function renderAccount(account: Account) {
-  let averageEntryPrice = account.averageEntryPrice.toFixed(2)
-  let gainPercentage = (((account.currentPrice / account.averageEntryPrice) - 1) * 100).toFixed(2)
-  let gainAmount = (((account.currentPrice / account.averageEntryPrice) - 1) * account.totalCost).toFixed(2) 
-  let currentMarketValue = account.currentMarketValue.toFixed(2)
-  let totalCost = account.totalCost.toFixed(2)
+function renderAccount(asset: Asset) {
+  let averageEntryPrice = asset.averageEntryPrice.toFixed(2)
+  let gainPercentage = (((asset.currentPrice / asset.averageEntryPrice) - 1) * 100).toFixed(2)
+  let gainAmount = (((asset.currentPrice / asset.averageEntryPrice) - 1) * asset.totalCost).toFixed(2) 
+  let currentMarketValue = asset.currentMarketValue.toFixed(2)
+  let totalCost = asset.totalCost.toFixed(2)
   return (
-    <div key={`${account.symbolId}`} className="container-quote">
+    <div key={`${asset.symbolId}`} className="container-quote">
       <div className="quote-values-container">
         <div className="gain-container">
-          {renderQuotePrice(account)}
+          {renderQuotePrice(asset)}
           <div className="average-entry-price bottom">{averageEntryPrice}$</div>
         </div>
         <div className="gain-container">

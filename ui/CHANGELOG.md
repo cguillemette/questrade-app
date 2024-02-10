@@ -1,6 +1,7 @@
 # 2024/02/10
 
 - Aligned action buttons to left
+- Added demo screenshot in readme
 
 # 2024/02/09
 

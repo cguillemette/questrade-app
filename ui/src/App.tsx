@@ -8,6 +8,7 @@ import { RedirectOnPrefix } from './components/RedirectOnPrefix';
 import { RefreshButton } from './components/RefreshButton/RefreshButton';
 import { Accounts, Asset, PerQuote } from './types';
 import { clearCookies } from './utils/cookies';
+import { perQuoteMock } from './mock/perQuote/demo';
 
 export default function App() {
   const [questradeLoginUrl, setQuestradeLoginUrl] = useState<string | null>(null);
@@ -18,11 +19,9 @@ export default function App() {
   useEffect(() => {
     (async () => {
       try {
-        (async () => {
-          const response = await fetch("http://127.0.0.1:6002/api/questrade/login");
-          const data = await response?.json();
-          setQuestradeLoginUrl(data?.url);
-        })();
+        const response = await fetch("http://127.0.0.1:6002/api/questrade/login");
+        const data = await response?.json();
+        setQuestradeLoginUrl(data?.url);
       } catch (e) {
         setQuestradeLoginUrl(null);
       }
@@ -85,7 +84,7 @@ export default function App() {
   }, [])
 
   function renderAuthAction() {
-    if (fetchedAccountsAtLeastOnce && perQuote === null && questradeLoginUrl) {
+    if (fetchedAccountsAtLeastOnce && !perQuote && questradeLoginUrl) {
       return <button style={{
           display: 'flex',
           flexDirection: 'column',
@@ -113,6 +112,8 @@ export default function App() {
 
   function renderPortfolio() {
     if (fetchedAccountsAtLeastOnce && perQuote) {
+      // Mock data to generate the demo screenshot in readme
+      // return <Portfolio perQuote={perQuoteMock} />;
       return <Portfolio perQuote={perQuote} />;
     }
   }
