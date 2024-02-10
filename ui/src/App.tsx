@@ -123,7 +123,7 @@ export default function App() {
       <div style={{
         display: 'flex',
         gap: 10,
-        marginBottom: '2rem'
+        marginBottom: '1rem'
       }}>
         {renderAuthAction()}
         {renderRefresh()}
