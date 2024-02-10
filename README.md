@@ -4,7 +4,7 @@ Simple app that interops with the Questrade API.
 
 **Why?**
 
-Ease watching my assets in a minimalist way and to skip the lengthy process of going on Questrade authentication.
+Minimalist way to watch assets and to skip the lengthy process of going on Questrade authentication.
 
 **Features**
 

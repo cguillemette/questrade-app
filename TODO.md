@@ -1,6 +1,6 @@
 # MVP
 
-- Package ImplicitOAuthFlow
+- Package ImplicitOAuthFlow + Update readme 
 - Add unit tests
 - Add lint
 
