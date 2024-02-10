@@ -84,7 +84,7 @@ export default function App() {
    fetchAccounts();
   }, [])
 
-  function renderLoginLogout() {
+  function renderAuthAction() {
     if (fetchedAccountsAtLeastOnce && perQuote === null && questradeLoginUrl) {
       return <button style={{
           display: 'flex',
@@ -105,7 +105,7 @@ export default function App() {
     }
   }
 
-  function renderRefreshButton() {
+  function renderRefresh() {
     if (fetchedAccountsAtLeastOnce && perQuote) {
       return <RefreshButton onRefresh={fetchAccounts} />
     }
@@ -122,11 +122,11 @@ export default function App() {
       <RedirectOnPrefix to="http://127.0.0.1:6001" />
       <div style={{
         display: 'flex',
-        justifyContent: 'space-between',
+        gap: 10,
         marginBottom: '2rem'
       }}>
-        {renderLoginLogout()}
-        {renderRefreshButton()}
+        {renderAuthAction()}
+        {renderRefresh()}
       </div>
       <LoadingIndicator loading={isFetchingAccounts}>
         {renderPortfolio()}
