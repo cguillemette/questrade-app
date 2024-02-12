@@ -113,13 +113,13 @@ export default function App() {
   function renderPortfolio() {
     if (fetchedAccountsAtLeastOnce && perQuote) {
       // Mock data to generate the demo screenshot in readme
-      // return <Portfolio perQuote={perQuoteMock} />;
+      return <Portfolio perQuote={perQuoteMock} />;
       return <Portfolio perQuote={perQuote} />;
     }
   }
   
   return (
-    <div className="App">
+    <div className="app">
       <RedirectOnPrefix to="http://127.0.0.1:6001" />
       <div style={{
         display: 'flex',

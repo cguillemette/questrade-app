@@ -15,7 +15,7 @@ In addition to adding support for implicit grant oauth to Questrade API, it incl
 
 **Demo**
 
-<img alt="demo" src="doc/screenshot.png" width="550" />
+<img alt="demo" src="doc/screenshot.webp" width="550" />
 
 ## Stack
 

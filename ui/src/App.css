@@ -1,6 +1,5 @@
 #root {
-  max-width: 1280px;
-  padding: 1rem;
+  height: 100vh;
   margin: auto;
   text-align: justify;
 }
@@ -38,6 +37,10 @@ body {
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
+}
+
+.app {
+  padding: 1.5rem;
 }
 
 h1 {

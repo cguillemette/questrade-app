@@ -1,3 +1,7 @@
+# 2024/02/12
+
+- Embed demo screenshot in macbook template
+
 # 2024/02/10
 
 - Aligned action buttons to left

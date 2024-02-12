@@ -61,6 +61,7 @@
 .balance-container > .stock-container {
   border-left: 1px solid rgba(255, 255, 255, 0.421);
   padding-left: 10px;
+  min-width: 20rem;
 }
 
 .top {

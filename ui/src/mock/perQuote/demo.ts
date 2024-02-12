@@ -49,12 +49,30 @@ const asset3: Asset = {
   totalCost: 2130
 };
 
+const asset4: Asset = {
+  averageEntryPrice: 105,
+  closedPnl: 0,
+  closedQuantity: 0,
+  currentMarketValue: 3614.1,
+  currentPrice: 120.47,
+  dayPnl: 0,
+  isRealTime: true,
+  isUnderReorg: false,
+  openPnl: 0,
+  openQuantity: 30,
+  symbol: "SHOP.TO",
+  symbolId: 4,
+  totalCost: 3150
+};
+
 const assets1: Assets = [asset1];
 const assets2: Assets = [asset2];
 const assets3: Assets = [asset3];
+const assets4: Assets = [asset4];
 
 export const perQuoteMock: PerQuote = new Map();
 
 perQuoteMock.set("AAPL", assets1);
 perQuoteMock.set("GOOG", assets2);
 perQuoteMock.set("MSFT", assets3);
+perQuoteMock.set("SHOP.TO", assets4);
