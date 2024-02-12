@@ -1,16 +1,16 @@
 # questrade-app
 
-Simple app that interops with the Questrade API.
+Simple app to watch your stocks from Questrade.
 
 **Why?**
 
-Minimalist way to watch assets and to skip the lengthy process of going on Questrade authentication.
+I was looking for a minimalist way to display my stocks from Questrade.
 
 **Features**
 
-In addition to adding support for implicit grant oauth to Questrade API, it includes a clean boilerplate that could serve building other apps.
-
-- Both front-end and back-end use docker with hot reloading for both frontend / backend
+- Adds support for implicit grant oauth against the Questrade API
+- Includes a clean boilerplate that could serve building other apps.
+- Both front-end and back-end use docker with hot reloading
 - It is lightweight to setup and can be deployed if needed to any container based provider
 
 **Demo**
