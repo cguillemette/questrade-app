@@ -1,7 +1,7 @@
 # 2024/02/12
 
 - Embed demo screenshot in macbook template
-- Updated copy on readme accordingly
+- Updates to readme
 
 # 2024/02/10
 

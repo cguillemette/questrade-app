@@ -1,12 +1,8 @@
 import json
-import os
 import logging
 import time
 
 from urllib import request
-from dotenv import load_dotenv
-
-load_dotenv()
 
 REFRESH_TOKEN_URL = "https://login.questrade.com/oauth2/token?grant_type=refresh_token&refresh_token={}"
 

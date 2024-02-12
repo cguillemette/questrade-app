@@ -7,7 +7,7 @@ import requests
 
 log = logging.getLogger(__name__)
 
-### Highly inspired from https://github.com/jborchma/qtrade
+### Inspired from https://github.com/jborchma/qtrade
 ### As I'm using different auth strategy: Implicit OAuth Flow (versus Authorization Code Flow)
 ### I had to keep this class focused on wrapping the API (might push a PR in future)
 class API:
