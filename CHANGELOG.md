@@ -1,6 +1,7 @@
 # 2023/02/13
 
-- Upgrade Python 3.8 to 3.11
+- Updated Python 3.8 to 3.11
+- Reverted Python to 3.9 (required by Vercel)
 
 # 2024/02/12
 

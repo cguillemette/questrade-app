@@ -13,4 +13,4 @@ python-dotenv = "*"
 types-requests = "*"
 
 [requires]
-python_version = "3.11.2"
+python_version = "3.9"
