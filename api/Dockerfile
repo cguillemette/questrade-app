@@ -1,4 +1,4 @@
-FROM python:3.8.18-bullseye
+FROM python:3.11.2-bullseye
 
 WORKDIR /workspace/api
 

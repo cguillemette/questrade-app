@@ -1,5 +1,9 @@
 # Future
 
+- Main view would display:
+  - Questrade accounts
+  - Paper trading
+  - Favorites
 - Follow favorite stocks
 - Support Plaid/Teller or similar providers
 - Grouping of account assets

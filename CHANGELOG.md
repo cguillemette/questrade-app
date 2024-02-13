@@ -1,3 +1,7 @@
+# 2023/02/13
+
+- Upgrade Python 3.8 to 3.11
+
 # 2024/02/12
 
 - Embed demo screenshot in macbook template
