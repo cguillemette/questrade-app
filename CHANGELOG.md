@@ -1,3 +1,7 @@
+# 2023/02/21
+
+- Prevent redirection to 127.0.0.1 when deployed
+
 # 2023/02/13
 
 - Updated Python 3.8 to 3.11

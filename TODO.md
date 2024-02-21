@@ -1,5 +1,7 @@
 # Future
 
+- Deployment using Vercel
+- Improve UI background with rounded edges
 - Main view would display:
   - Questrade accounts
   - Paper trading
