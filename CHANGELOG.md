@@ -1,6 +1,7 @@
 # 2023/02/21
 
 - Prevent redirection to 127.0.0.1 when deployed
+- Load environment variables for ui
 
 # 2023/02/13
 

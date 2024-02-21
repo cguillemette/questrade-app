@@ -8,7 +8,7 @@ import { RedirectOnPrefix } from './components/RedirectOnPrefix';
 import { RefreshButton } from './components/RefreshButton/RefreshButton';
 import { Accounts, Asset, PerQuote } from './types';
 import { clearCookies } from './utils/cookies';
-import { perQuoteMock } from './mock/perQuote/demo';
+// import { perQuoteMock } from './mock/perQuote/demo';
 
 export default function App() {
   const [questradeLoginUrl, setQuestradeLoginUrl] = useState<string | null>(null);
@@ -16,10 +16,13 @@ export default function App() {
   const [isFetchingAccounts, setIsFetchingAccounts] = useState(false);
   const [perQuote, setPerQuote] = useState<PerQuote | null>(null);
 
+  const API_URL = import.meta.env.VITE_API_URL;
+
   useEffect(() => {
     (async () => {
       try {
-        const response = await fetch("http://127.0.0.1:6002/api/questrade/login");
+        
+        const response = await fetch(`${API_URL}/api/questrade/login`);
         const data = await response?.json();
         setQuestradeLoginUrl(data?.url);
       } catch (e) {
@@ -55,7 +58,7 @@ export default function App() {
   const fetchAccounts = async () => {
     try {
       setIsFetchingAccounts(true);
-      const response = await fetch("http://127.0.0.1:6002/api/accounts", {
+      const response = await fetch(`${API_URL}/api/accounts`, {
         credentials: 'include'
       });
       const data = await response?.json();
