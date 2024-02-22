@@ -1,9 +1,13 @@
-# 2023/02/21
+# 2024/02/22
+
+- Add vercel config to use Flask+WSGI
+
+# 2024/02/21
 
 - Prevent redirection to 127.0.0.1 when deployed
 - Load environment variables for ui
 
-# 2023/02/13
+# 2024/02/13
 
 - Updated Python 3.8 to 3.11
 - Reverted Python to 3.9 (required by Vercel)
