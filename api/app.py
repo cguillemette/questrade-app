@@ -16,9 +16,9 @@ cors_origin_local=os.getenv('CORS_ORIGIN_LOCAL')
 cors_origin_questrade_callback=os.getenv('CORS_ORIGIN_QUESTRADE_CALLBACK')
 origin_questrade_client_id=os.getenv('QUESTRADE_CLIENT_ID')
 
-application = Flask(__name__, static_folder="./static")
+app = Flask(__name__, static_folder="./static")
 CORS(
-    application, 
+    app, 
     resources={r"/*": {"origins": 
                        [cors_origin_local, cors_origin_questrade_callback]}},
     supports_credentials=True
@@ -26,11 +26,11 @@ CORS(
 
 log = logging.getLogger(__name__)
 
-@application.errorhandler(429)
+@app.errorhandler(429)
 def too_many_requests(e):
     return jsonify(error=str(e)), 429
 
-@application.route('/api/questrade/login/', methods=['GET'])
+@app.route('/api/questrade/login/', methods=['GET'])
 def questrade_client_id():
     url = (
         f'https://login.questrade.com/oauth2/authorize?'
@@ -41,7 +41,7 @@ def questrade_client_id():
         "url": url,
     }), 200)
 
-@application.route('/api/accounts', methods=['GET'])
+@app.route('/api/accounts', methods=['GET'])
 def accounts():
     access_token = request.cookies.get('access_token')
     refresh_token = request.cookies.get('refresh_token')
