@@ -1,6 +1,6 @@
 FROM python:3.9.18-bullseye
 
-WORKDIR /workspace/api
+WORKDIR /workspace/backend
 
 COPY Pipfile .
 COPY Pipfile.lock .

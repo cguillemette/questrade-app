@@ -5,8 +5,8 @@ services:
     ports: ['6001:5173']
     volumes:
       - .:/workspace
-  api:
-    build: ./api
+  backend:
+    build: ./backend
     environment:
       FLASK_DEBUG: 1
     ports: ['6002:8080']

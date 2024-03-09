@@ -35,7 +35,7 @@ To run locally, you minimally need:
     ngrok http 6001
     ```
 
-  - In ./api/.env:
+  - In ./backend/.env:
     - Update CORS_ORIGIN_QUESTRADE_CALLBACK with ngrok generated https URL above
     - Update QUESTRADE_CLIENT_ID with you Questrade App Hub consume key
 
