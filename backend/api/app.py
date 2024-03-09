@@ -7,29 +7,6 @@ from flask import Flask, abort, jsonify, make_response, request
 from flask_cors import CORS
 from dotenv import load_dotenv
 
-## no __init__.py
-#
-# from questrade import API
-# ModuleNotFoundError: No module named 'questrade'
-#
-# from questrade import API
-# from questrade import ImplicitOAuthFlow
-#
-#
-# from .questrade import API
-# ImportError: attempted relative import with no known parent package
-# from .questrade import API
-# from questrade import ImplicitOAuthFlow
-
-# with __init__.py this works with docker
-#
-# from backend.questrade import API
-# from backend.questrade import ImplicitOAuthFlow
-#
-
-# with __init__.py fails on vercel
-# from backend.questrade import API
-# from backend.questrade import ImplicitOAuthFlow
 
 try:
     from backend.questrade import API
