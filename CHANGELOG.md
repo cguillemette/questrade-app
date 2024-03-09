@@ -1,3 +1,7 @@
+# 2024/03/09
+
+- Add missing .env for /ui
+
 # 2024/02/22
 
 - Add vercel config to use Flask+WSGI

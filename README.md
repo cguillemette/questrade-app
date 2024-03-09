@@ -25,11 +25,6 @@ I understand the importance of having a tool that provides a minimalist view of 
 
 To run locally, you minimally need:
 
-- [Docker](https://www.docker.com/products/docker-desktop)
-  ```sh
-  docker-compose up --build -d 
-  ```
-
 - [Questrade App Hub](https://www.questrade.com/partner-centre/app-hub)
   - This repo depends on the Questrade API, you will need to setup your own app from their site and ensure you provide an https callback.
   - To do so, you can use ngrok after fetching your authorization token from their site:
@@ -40,8 +35,14 @@ To run locally, you minimally need:
     ngrok http 6001
     ```
 
-  - In api/.env:
+  - In ./api/.env:
     - Update CORS_ORIGIN_QUESTRADE_CALLBACK with ngrok generated https URL above
     - Update QUESTRADE_CLIENT_ID with you Questrade App Hub consume key
+
+- [Docker](https://www.docker.com/products/docker-desktop)
+  
+  ```sh
+  docker-compose up --build -d 
+  ```
 
 - Browse to <http://127.0.0.1:6001>
