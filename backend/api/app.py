@@ -61,12 +61,12 @@ def too_many_requests(e):
 
 @app.route("/", methods=["GET"])
 def hello():
-    return "Hello, world"
+    return "Hello, world 1"
 
 
 @app.route("/api/app", methods=["GET"])
 def hello_api_app():
-    return "Hello, world"
+    return "Hello, world 2"
 
 
 @app.route("/api/questrade/login/", methods=["GET"])
