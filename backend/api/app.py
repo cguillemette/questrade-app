@@ -7,8 +7,8 @@ from flask import Flask, abort, jsonify, make_response, request
 from flask_cors import CORS
 from dotenv import load_dotenv
 
-from ..questrade.API import API
-from ..questrade.ImplicitOAuthFlow import ImplicitOAuthFlow
+from questrade.API import API
+from questrade.ImplicitOAuthFlow import ImplicitOAuthFlow
 
 load_dotenv()
 
