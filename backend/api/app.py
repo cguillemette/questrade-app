@@ -70,7 +70,7 @@ def hello_api_app():
 
 
 @app.route("/api/app/questrade", methods=["GET"])
-def hello_api_app():
+def hello_api_app_questrade():
     return "Hello, world 3"
 
 
