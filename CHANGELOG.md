@@ -1,6 +1,8 @@
 # 2024/03/09
 
 - Add missing .env for /ui
+- Finally got vercel to properly deploy: tricky since nested in backend folder from root folder
+  - Handles /api/app correctly but no other routes though
 
 # 2024/02/22
 

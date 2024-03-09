@@ -9,11 +9,11 @@ from dotenv import load_dotenv
 
 
 try:
-    from backend.questrade import API
-    from backend.questrade import ImplicitOAuthFlow
+    from backend.questrade.API import API
+    from backend.questrade.ImplicitOAuthFlow import ImplicitOAuthFlow
 except:  # noqa: E722
-    from questrade import API
-    from questrade import ImplicitOAuthFlow
+    from questrade.API import API
+    from questrade.ImplicitOAuthFlow import ImplicitOAuthFlow
 
 load_dotenv()
 
@@ -43,6 +43,7 @@ def hello():
 
 @app.route("/api/app", methods=["GET"])
 def hello_api_app():
+
     return "Hello, world 2"
 
 
