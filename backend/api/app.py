@@ -69,6 +69,11 @@ def hello_api_app():
     return "Hello, world 2"
 
 
+@app.route("/api/app/questrade", methods=["GET"])
+def hello_api_app():
+    return "Hello, world 3"
+
+
 @app.route("/api/questrade/login/", methods=["GET"])
 def questrade_client_id():
     url = (
