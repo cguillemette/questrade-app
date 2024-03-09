@@ -65,7 +65,7 @@ def hello():
 
 
 @app.route("/api/app", methods=["GET"])
-def hello():
+def hello_api_app():
     return "Hello, world"
 
 
