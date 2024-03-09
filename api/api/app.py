@@ -31,7 +31,7 @@ def too_many_requests(e):
     return jsonify(error=str(e)), 429
 
 
-@app.route("/")
+@app.route("/", methods=["GET"])
 def hello():
     return "Hello, world"
 

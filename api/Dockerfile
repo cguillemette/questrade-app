@@ -9,4 +9,4 @@ RUN pip install pipenv && pipenv install --system --deploy
 
 COPY . .
 
-CMD ["flask", "run", "--host=0.0.0.0", "--port=8080"]
+CMD ["flask", "--app", "api/app", "run", "--host=0.0.0.0", "--port=8080"]
