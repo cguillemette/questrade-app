@@ -12,23 +12,29 @@ from api.questrade.ImplicitOAuthFlow import ImplicitOAuthFlow
 
 load_dotenv()
 
-cors_origin_local=os.getenv('CORS_ORIGIN_LOCAL')
-cors_origin_questrade_callback=os.getenv('CORS_ORIGIN_QUESTRADE_CALLBACK')
-origin_questrade_client_id=os.getenv('QUESTRADE_CLIENT_ID')
+cors_origin_local = os.getenv("CORS_ORIGIN_LOCAL")
+cors_origin_questrade_callback = os.getenv("CORS_ORIGIN_QUESTRADE_CALLBACK")
+origin_questrade_client_id = os.getenv("QUESTRADE_CLIENT_ID")
 
 app = Flask(__name__, static_folder="./static")
 CORS(
-    app, 
-    resources={r"/*": {"origins": 
-                       [cors_origin_local, cors_origin_questrade_callback]}},
-    supports_credentials=True
-    )
+    app,
+    resources={r"/*": {"origins": [cors_origin_local, cors_origin_questrade_callback]}},
+    supports_credentials=True,
+)
 
 log = logging.getLogger(__name__)
+
 
 @app.errorhandler(429)
 def too_many_requests(e):
     return jsonify(error=str(e)), 429
+
+
+@app.route("/")
+def hello():
+    return "Hello, world"
+
 
 @app.route('/api/questrade/login/', methods=['GET'])
 def questrade_client_id():
