@@ -36,23 +36,13 @@ def too_many_requests(e):
     return jsonify(error=str(e)), 429
 
 
-@app.route("/", methods=["GET"])
-def hello():
+@app.route("/api/settings", methods=["GET"])
+def settings():
     return {
         "cors_origin_local": cors_origin_local,
         "cors_origin_questrade_callback": cors_origin_questrade_callback,
         "origin_questrade_client_id": origin_questrade_client_id,
     }
-
-
-@app.route("/api/app", methods=["GET"])
-def hello_api_app():
-    return "Hello, world 2"
-
-
-@app.route("/api/app/questrade", methods=["GET"])
-def hello_api_app_questrade():
-    return "Hello, world 3"
 
 
 @app.route("/api/questrade/login/", methods=["GET"])
