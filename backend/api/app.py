@@ -38,7 +38,11 @@ def too_many_requests(e):
 
 @app.route("/", methods=["GET"])
 def hello():
-    return "Hello, world 1"
+    return {
+        "cors_origin_local": cors_origin_local,
+        "cors_origin_questrade_callback": cors_origin_questrade_callback,
+        "origin_questrade_client_id": origin_questrade_client_id,
+    }
 
 
 @app.route("/api/app", methods=["GET"])
