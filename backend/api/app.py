@@ -1,3 +1,5 @@
+# noqa: D103
+
 import functools
 import logging
 import operator
@@ -31,11 +33,6 @@ CORS(
 log = logging.getLogger(__name__)
 
 
-@app.errorhandler(429)
-def too_many_requests(e):
-    return jsonify(error=str(e)), 429
-
-
 @app.route("/api/settings", methods=["GET"])
 def settings():
     return {
@@ -62,24 +59,51 @@ def questrade_client_id():
     )
 
 
-@app.route("/api/accounts", methods=["GET"])
+@app.route("/api/accounts", methods=["POST"])
 def accounts():
-    access_token = request.cookies.get("access_token")
-    refresh_token = request.cookies.get("refresh_token")
-    expires_at = request.cookies.get("expires_at")
-    api_server = request.cookies.get("api_server")
+    body = None
+    access_token = None
+    refresh_token = None
+    expires_at = None
+    api_server = None
 
-    if (
-        access_token is None
-        or refresh_token is None
-        or expires_at is None
-        or api_server is None
-    ):
-        return abort(401, "Unauthorized")
+    try:
+        body = request.get_json()
 
-    tokens = ImplicitOAuthFlow(
-        access_token, refresh_token, expires_at, api_server
-    ).get_valid_access_token()
+        # Upon login body will be provided. Otherwise, will be provided through cookies.
+        access_token = body.get("access_token")
+        refresh_token = body.get("refresh_token")
+        expires_at = body.get("expires_at")
+        api_server = body.get("api_server")
+        if (
+            access_token is None
+            or refresh_token is None
+            or expires_at is None
+            or api_server is None
+        ):
+            access_token = request.cookies.get("access_token")
+            refresh_token = request.cookies.get("refresh_token")
+            expires_at = request.cookies.get("expires_at")
+            api_server = request.cookies.get("api_server")
+            if (
+                access_token is None
+                or refresh_token is None
+                or expires_at is None
+                or api_server is None
+            ):
+                return abort(401, "Unauthorized")
+    except Exception as e:
+        log.error(str(e))
+        return abort(401, "Failed authorize")
+
+    try:
+        tokens = ImplicitOAuthFlow(
+            access_token, refresh_token, expires_at, api_server
+        ).get_valid_access_token()
+    except Exception as e:
+        log.error(str(e))
+        resp = make_response("Unexpected error occured.", 500)
+        return resp
 
     def market_value(element):
         return element["currentMarketValue"]

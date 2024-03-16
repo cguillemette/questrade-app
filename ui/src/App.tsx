@@ -15,6 +15,7 @@ export default function App() {
   const [fetchedAccountsAtLeastOnce, setFetchedAccountsAtLeastOnce] = useState(false);
   const [isFetchingAccounts, setIsFetchingAccounts] = useState(false);
   const [perQuote, setPerQuote] = useState<PerQuote | null>(null);
+  const [payload, setPayload] = useState<({ [x: string]: string; } | undefined)>({});
 
   const API_URL = import.meta.env.VITE_API_URL;
 
@@ -33,25 +34,27 @@ export default function App() {
   useEffect(() => {
     const accessToken = Cookies.get("access_token")
 
-    let cookiesSet = false;
+    let parsedHash = false;
     const fragment = window.location.hash.substring(1);
     let fragmentSplitted = fragment.split('&');
-    fragmentSplitted.map(function (f) {
+    let _payload = fragmentSplitted.map(function (f) {
       let pair = f.split("=");
       if (pair.length === 2) {
-        Cookies.set(pair[0], pair[1], {
-          domain: 'https://questrade-app-api.vercel.app'
-        });
-        cookiesSet = true;
+        parsedHash = true;
+        return { [pair[0]]: pair[1] }
       }
     })
-
-    if (accessToken != Cookies.get("access_token")) {
-      const expiresIn = Cookies.get("expires_in") || "1800";
-      Cookies.set("expires_at", Math.floor(parseInt(expiresIn) + new Date().getTime() / 1000 - 300).toString());
+    if (!_payload) {
+      return;
     }
+    const filtered = _payload.filter(p => p !== undefined)
+    const payload = filtered?.reduce((acc, curr) => Object.assign(acc, curr), {});
+    if (payload && payload["expires_in"]) {
+      payload['expires_at'] = Math.floor(parseInt(payload["expires_in"]) + new Date().getTime() / 1000 - 300).toString();
+    }
+    setPayload(payload);
 
-    if (cookiesSet) {
+    if (parsedHash) {
       window.location.hash = "";
     }
   }, []);
@@ -60,7 +63,12 @@ export default function App() {
     try {
       setIsFetchingAccounts(true);
       const response = await fetch(`${API_URL}/api/accounts`, {
-        credentials: 'include'
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        method: 'POST',
+        credentials: 'include',
+        body: JSON.stringify(payload),
       });
       const data = await response?.json();
       const accounts = new Map(Object.entries(data.accounts)) as Accounts;
@@ -85,7 +93,7 @@ export default function App() {
 
   useEffect(() => {
     fetchAccounts();
-  }, [])
+  }, [payload])
 
   function renderAuthAction() {
     if (fetchedAccountsAtLeastOnce && !perQuote && questradeLoginUrl) {
