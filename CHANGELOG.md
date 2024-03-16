@@ -1,4 +1,5 @@
 # 2024/03/16
+
 - Display the environment variables to ensure they are set correctly
 - Support different domains between frontend/backend as Vercel provides separate domains
 

@@ -48,7 +48,7 @@ export default function App() {
       return;
     }
     const filtered = _payload.filter(p => p !== undefined)
-    const payload = filtered?.reduce((acc, curr) => Object.assign(acc, curr), {});
+    const payload = filtered?.reduce((acc, curr) => Object.assign(acc || {}, curr), {});
     if (payload && payload["expires_in"]) {
       payload['expires_at'] = Math.floor(parseInt(payload["expires_in"]) + new Date().getTime() / 1000 - 300).toString();
     }
