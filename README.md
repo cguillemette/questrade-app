@@ -2,6 +2,8 @@
 
 Simple way to monitor your investments through Questrade.
 
+https://questrade-app.vercel.app/
+
 <img alt="demo" src="doc/screenshot.webp" width="550" />
 
 <br>

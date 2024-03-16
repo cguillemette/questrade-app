@@ -2,6 +2,7 @@
 
 - Display the environment variables to ensure they are set correctly
 - Support different domains between frontend/backend as Vercel provides separate domains
+- Updated README.md with domain
 
 # 2024/03/09
 
